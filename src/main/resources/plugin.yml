@@ -24,3 +24,4 @@ commands:
     aliases: [spawnmob, spawne]
   perm:
   fire:
+  rank:

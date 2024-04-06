@@ -15,20 +15,20 @@ public final class PermissionsModule implements ServerModule {
     TODO: Load permissions of a rank from a rank.yml file and store the playerPermissions in the cache instead of this file
      */
 
-    private final JavaPlugin javaPlugin;
+    private final JavaPlugin plugin;
 
     //To be removed
     private final Map<UUID, List<PermissionAttachment>> playerPermissions;
 
     public PermissionsModule(JavaPlugin plugin) {
-        this.javaPlugin = plugin;
+        this.plugin = plugin;
         playerPermissions = new HashMap<>();
     }
 
     @Override
     public void setUp() {
         CommandExecutor command = new PermissionsCommand(this);
-        Objects.requireNonNull(javaPlugin.getCommand("perm")).setExecutor(command);
+        Objects.requireNonNull(plugin.getCommand("perm")).setExecutor(command);
     }
 
     @Override
@@ -40,7 +40,7 @@ public final class PermissionsModule implements ServerModule {
         List<PermissionAttachment> permissions = playerPermissions.computeIfAbsent(player.getUniqueId(), k -> new ArrayList<>());
 
         if (permissions.isEmpty()) {
-            PermissionAttachment permissionAttachment = player.addAttachment(javaPlugin);
+            PermissionAttachment permissionAttachment = player.addAttachment(plugin);
             permissionAttachment.setPermission(permission, true);
             permissions.add(permissionAttachment);
             return true;
@@ -52,7 +52,7 @@ public final class PermissionsModule implements ServerModule {
             }
         }
 
-        PermissionAttachment permissionAttachment = player.addAttachment(javaPlugin);
+        PermissionAttachment permissionAttachment = player.addAttachment(plugin);
         permissionAttachment.setPermission(permission, true);
         permissions.add(permissionAttachment);
         return true;

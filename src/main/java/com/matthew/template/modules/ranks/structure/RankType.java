@@ -1,4 +1,4 @@
-package com.matthew.template.modules.ranks;
+package com.matthew.template.modules.ranks.structure;
 
 import org.bukkit.ChatColor;
 
