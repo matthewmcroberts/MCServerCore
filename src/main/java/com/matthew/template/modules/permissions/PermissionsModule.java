@@ -11,8 +11,13 @@ import java.util.*;
 
 public final class PermissionsModule implements ServerModule {
 
+    /*
+    TODO: Load permissions of a rank from a rank.yml file and store the playerPermissions in the cache instead of this file
+     */
+
     private final JavaPlugin javaPlugin;
 
+    //To be removed
     private final Map<UUID, List<PermissionAttachment>> playerPermissions;
 
     public PermissionsModule(JavaPlugin plugin) {
@@ -34,15 +39,15 @@ public final class PermissionsModule implements ServerModule {
     public boolean addPermission(Player player, String permission) {
         List<PermissionAttachment> permissions = playerPermissions.computeIfAbsent(player.getUniqueId(), k -> new ArrayList<>());
 
-        if(permissions.isEmpty()) {
+        if (permissions.isEmpty()) {
             PermissionAttachment permissionAttachment = player.addAttachment(javaPlugin);
             permissionAttachment.setPermission(permission, true);
             permissions.add(permissionAttachment);
             return true;
         }
 
-        for(PermissionAttachment perm: permissions) {
-            if(perm.toString().equals(permission)) {
+        for (PermissionAttachment perm : permissions) {
+            if (perm.toString().equals(permission)) {
                 return false;
             }
         }
@@ -72,8 +77,8 @@ public final class PermissionsModule implements ServerModule {
     public List<String> getAllPermissions(Player player) {
         List<String> permissionsList = new ArrayList<>();
         Set<String> keys;
-        if(exists(player)) {
-            for(PermissionAttachment permissions: playerPermissions.get(player.getUniqueId())) {
+        if (exists(player)) {
+            for (PermissionAttachment permissions : playerPermissions.get(player.getUniqueId())) {
                 keys = permissions.getPermissions().keySet();
                 permissionsList.addAll(keys);
             }

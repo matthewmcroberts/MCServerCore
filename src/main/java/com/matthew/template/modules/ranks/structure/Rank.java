@@ -1,4 +1,4 @@
-package com.matthew.template.modules.ranks;
+package com.matthew.template.modules.ranks.structure;
 
 import com.matthew.template.modules.manager.ServerModuleManager;
 import com.matthew.template.modules.permissions.PermissionsModule;
@@ -25,17 +25,6 @@ public class Rank {
 
     public String getName() {
         return name;
-    }
-
-    public ArrayList<PermissionAttachment> getPermissions() {
-        return permissions;
-    }
-
-    public void addPermission(PermissionAttachment perm) {
-        if(permissions == null) {
-            return;
-        }
-        permissions.add(perm);
     }
 
     public ChatColor getColor() {
