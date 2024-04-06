@@ -27,10 +27,10 @@ public final class ServerModuleManager implements ServerModule {
         return this; //used for method chaining in NativePractice#onEnable
     }
 
-    public ServerModule getRegisteredModule(Class<? extends ServerModule> clazz) {
+    public <T extends ServerModule> T getRegisteredModule(Class<T> clazz) {
         for(ServerModule module: registeredModules) {
             if(clazz.isInstance(module)) {
-                return module;
+                return clazz.cast(module);
             }
         }
         return null;
