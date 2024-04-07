@@ -14,10 +14,7 @@
 		     to compile your plugin to multiple servers. -->
 
 		<target name="Build">
-	    	<jar jarfile="C:/Users/mm20c/Desktop/Minecourse 1.19.4/plugins/${ant.project.name}.jar" basedir="./target/classes/" includes="**/*">
+	    	<jar jarfile="C:/Users/mm20c/OneDrive/Desktop/Minecourse 1.19.4/plugins/${ant.project.name}.jar" basedir="./target/classes/" includes="**/*">
 	        </jar>
-
-			<jar jarfile="C:/Users/mm20c/Desktop/Minecourse 1.8.8/plugins/${ant.project.name}.jar" basedir="./target/classes/" includes="**/*">
-			</jar>
 		</target>
 </project> 

@@ -2,7 +2,6 @@ package com.matthew.template.modules.ranks;
 
 import com.matthew.template.api.ServerModule;
 import com.matthew.template.modules.manager.ServerModuleManager;
-import com.matthew.template.modules.permissions.commands.PermissionsCommand;
 import com.matthew.template.modules.ranks.command.RankCommand;
 import com.matthew.template.modules.ranks.structure.Rank;
 import com.matthew.template.modules.ranks.structure.RankType;
@@ -11,7 +10,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
