@@ -28,8 +28,7 @@ public final class ServerCore extends JavaPlugin {
 
         //Modules Setup
         moduleManager = ServerModuleManager.getInstance();
-        moduleManager.registerModule(new DataStorageModule(this));
-        moduleManager.registerModule(new RankModule(this));
+        moduleManager.registerModule(new DataStorageModule(this)).registerModule(new RankModule(this));
         moduleManager.setUp();
 
         getLogger().info("NativePractice loaded");

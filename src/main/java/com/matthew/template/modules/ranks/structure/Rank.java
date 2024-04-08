@@ -15,6 +15,7 @@ public class Rank {
     private final ChatColor color;
     private final String prefix;
     private final boolean isDefault;
+    private final boolean isStaffRank;
 
     public Rank(RankType rankType, String prefix, boolean isDefault) {
         this.rankType = rankType;
@@ -23,6 +24,7 @@ public class Rank {
         this.prefix = prefix;
         this.isDefault = isDefault;
         this.permissions = new HashSet<>();
+        isStaffRank = rankType == RankType.ADMIN;
     }
 
     public RankType getType() {
@@ -43,6 +45,10 @@ public class Rank {
 
     public boolean isDefault() {
         return isDefault;
+    }
+
+    public boolean isStaffRank() {
+        return isStaffRank;
     }
 
     public boolean hasPermission(String node) {
