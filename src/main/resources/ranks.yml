@@ -1,0 +1,17 @@
+OWNER:
+  - INHERITS: "ADMIN"
+  - PREFIX: "&c[OWNER]"
+  - IS_DEFAULT: false
+  - PERMISSIONS:
+      - "rank.use"
+ADMIN:
+  - INHERITS: "MEMBER"
+  - PREFIX: "&c[ADMIN]"
+  - IS_DEFAULT: false
+  - PERMISSIONS:
+      - "rank.use"
+MEMBER:
+  - INHERITS:
+  - PREFIX: "&7[MEMBER]"
+  - IS_DEFAULT: true
+  - PERMISSIONS:
