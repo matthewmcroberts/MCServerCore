@@ -37,6 +37,7 @@ public final class DataStorageModule implements ServerModule {
         return true;
     }
 
+
     public Set<Rank> getAllRanks() {
         return cache.getRanks();
     }
@@ -82,15 +83,6 @@ public final class DataStorageModule implements ServerModule {
     private static class Cache {
         private final Set<Rank> ranks = new HashSet<>();
         private final List<PlayerData> players = new ArrayList<>();
-
-        public Rank getRank(RankType rankType) {
-            for (Rank rank : ranks) {
-                if (rank.getType() == rankType) {
-                    return rank;
-                }
-            }
-            return null;
-        }
 
         public Set<Rank> getRanks() {
             return ranks;

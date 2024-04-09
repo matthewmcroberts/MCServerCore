@@ -7,10 +7,13 @@ import com.matthew.template.modules.ranks.command.RankCommand;
 import com.matthew.template.modules.ranks.structure.Rank;
 import com.matthew.template.modules.ranks.structure.RankType;
 import com.matthew.template.modules.storage.DataStorageModule;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -19,15 +22,15 @@ public class RankModule implements ServerModule {
 
     private final JavaPlugin plugin;
 
-    private final ServerModuleManager moduleManager = ServerModuleManager.getInstance();
-    private final DataStorageModule storage = moduleManager.getRegisteredModule(DataStorageModule.class);
+    private final ServerModuleManager moduleManager;
+    private final DataStorageModule storage;
     private final Set<Rank> ranks;
 
     public RankModule(JavaPlugin plugin) {
         this.plugin = plugin;
+        this.moduleManager = ServerModuleManager.getInstance();
+        this.storage = moduleManager.getRegisteredModule(DataStorageModule.class);
         this.ranks = new HashSet<>();
-        ranks.add(new Rank(RankType.ADMIN, "[ADMIN]", false));
-        ranks.add(new Rank(RankType.MEMBER, "[MEMBER]", false));
     }
 
     public Set<Rank> getRanks() {
@@ -52,7 +55,7 @@ public class RankModule implements ServerModule {
 
     @Override
     public void setUp() {
-        for(Rank rank: ranks) {
+        for (Rank rank : ranks) {
             assert storage != null;
             storage.addRank(rank);
         }
@@ -62,6 +65,5 @@ public class RankModule implements ServerModule {
 
     @Override
     public void teardown() {
-
     }
 }
