@@ -1,5 +1,6 @@
 package com.matthew.template;
 
+import com.matthew.template.data.config.RankConfigManager;
 import com.matthew.template.generalcommands.GeneralCommandManager;
 import com.matthew.template.generalevents.GeneralEventsManager;
 import com.matthew.template.modules.manager.ServerModuleManager;
@@ -13,6 +14,8 @@ public final class ServerCore extends JavaPlugin {
     private ServerModuleManager moduleManager;
     private GeneralEventsManager mechanicManager;
     private GeneralCommandManager commandManager;
+
+    private RankConfigManager rankConfig;
 
     //open database connection and load necessary data into cache
     @Override
@@ -30,6 +33,9 @@ public final class ServerCore extends JavaPlugin {
         moduleManager = ServerModuleManager.getInstance();
         moduleManager.registerModule(new DataStorageModule(this)).registerModule(new RankModule(this));
         moduleManager.setUp();
+
+        //Load Ranks into cache
+        rankConfig = new RankConfigManager(this);
 
         getLogger().info("NativePractice loaded");
     }

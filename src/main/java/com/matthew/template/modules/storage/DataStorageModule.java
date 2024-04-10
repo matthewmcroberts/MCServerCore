@@ -3,7 +3,6 @@ package com.matthew.template.modules.storage;
 import com.matthew.template.api.ServerModule;
 import com.matthew.template.data.PlayerData;
 import com.matthew.template.modules.ranks.structure.Rank;
-import com.matthew.template.modules.ranks.structure.RankType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
@@ -22,7 +21,7 @@ public final class DataStorageModule implements ServerModule {
     }
 
     public boolean addRank(Rank rank) {
-        if (!(exists(rank))) {
+        if ((exists(rank))) {
             return false;
         }
         cache.getRanks().add(rank);
@@ -43,7 +42,7 @@ public final class DataStorageModule implements ServerModule {
     }
 
     public boolean addPlayer(PlayerData player) {
-        if (!(exists(player))) {
+        if ((exists(player))) {
             return false;
         }
         cache.getPlayers().add(player);
@@ -81,8 +80,13 @@ public final class DataStorageModule implements ServerModule {
     }
 
     private static class Cache {
-        private final Set<Rank> ranks = new HashSet<>();
-        private final List<PlayerData> players = new ArrayList<>();
+        private final Set<Rank> ranks;
+        private final List<PlayerData> players;
+
+        public Cache() {
+            this.ranks = new HashSet<>();
+            this.players = new ArrayList<>();
+        }
 
         public Set<Rank> getRanks() {
             return ranks;

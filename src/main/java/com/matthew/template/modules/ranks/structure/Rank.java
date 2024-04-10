@@ -9,33 +9,29 @@ import java.util.Set;
 public class Rank {
 
     private final ServerModuleManager moduleManager = ServerModuleManager.getInstance();
-    private final RankType rankType;
     private final String name;
     private final Set<String> permissions;
-    private final ChatColor color;
+    private final String color;
+    private final String chatColor;
     private final String prefix;
     private final boolean isDefault;
     private final boolean isStaffRank;
 
-    public Rank(RankType rankType, String prefix, boolean isDefault) {
-        this.rankType = rankType;
-        this.name = rankType.getName();
-        this.color = rankType.getColor();
+    public Rank(String name, String color, String chatColor, String prefix, boolean isDefault, boolean isStaffRank, Set<String> permissions) {
+        this.name = name;
+        this.color = color;
+        this.chatColor = chatColor;
         this.prefix = prefix;
         this.isDefault = isDefault;
-        this.permissions = new HashSet<>();
-        isStaffRank = rankType == RankType.ADMIN;
-    }
-
-    public RankType getType() {
-        return this.rankType;
+        this.permissions = permissions;
+        this.isStaffRank = isStaffRank;
     }
 
     public String getName() {
         return name;
     }
 
-    public ChatColor getColor() {
+    public String getColor() {
         return color;
     }
 
@@ -61,5 +57,13 @@ public class Rank {
         }
         permissions.add(node);
         return true;
+    }
+
+    public Set<String> getPermissions() {
+        return permissions;
+    }
+
+    public String getChatColor() {
+        return chatColor;
     }
 }

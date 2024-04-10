@@ -30,7 +30,7 @@ public class RankCommand implements CommandExecutor {
         }
 
         for(Rank rank: rankModule.getRanks()) {
-            player.sendMessage(rank.getName());
+            player.sendMessage(rank.getName() + ": " + rank.getPermissions().toString());
         }
 
         return true;

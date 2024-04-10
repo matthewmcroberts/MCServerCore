@@ -15,7 +15,7 @@ public final class PlayerData {
     private final UUID uuid;
     private final Player player;
     private Rank rank;
-    private ChatColor chatColor;
+    private String chatColor;
     private boolean isStaff;
 
     private long playTime;
@@ -25,7 +25,7 @@ public final class PlayerData {
         this.uuid = player.getUniqueId();
         this.rank = rank;
         this.isStaff = rank.isStaffRank();
-        this.chatColor = rank.getColor();
+        this.chatColor = rank.getChatColor();
         this.player = player;
         this.playTime = playTime;
     }
@@ -46,11 +46,11 @@ public final class PlayerData {
         return rank;
     }
 
-    public ChatColor getChatColor() {
+    public String getChatColor() {
         return chatColor;
     }
 
-    public void setChatColor(final ChatColor chatColor) {
+    public void setChatColor(final String chatColor) {
         this.chatColor = chatColor;
     }
 
