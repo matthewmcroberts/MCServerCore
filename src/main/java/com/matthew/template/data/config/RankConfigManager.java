@@ -17,21 +17,13 @@ import java.util.Set;
 
 public class RankConfigManager extends ConfigManager {
 
-    private final JavaPlugin plugin;
-
-    private final ServerModuleManager moduleManager;
-
-    private final DataStorageModule module;
-
     private final File rankFile;
 
     private final YamlConfiguration config;
 
     //TODO: Setup ConfigManager
     public RankConfigManager(JavaPlugin plugin) {
-        this.plugin = plugin;
-        this.moduleManager = ServerModuleManager.getInstance();
-        this.module = moduleManager.getRegisteredModule(DataStorageModule.class);
+        super();
         String path = "ranks.yml";
 
         plugin.saveResource(path, false);
