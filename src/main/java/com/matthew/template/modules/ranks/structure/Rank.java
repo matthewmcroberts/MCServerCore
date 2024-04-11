@@ -43,7 +43,7 @@ public class Rank {
         return isDefault;
     }
 
-    public boolean isStaffRank() {
+    public boolean isStaff() {
         return isStaffRank;
     }
 

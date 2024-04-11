@@ -42,6 +42,8 @@ public final class ServerCore extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        rankConfig.save();
+
         moduleManager.teardown();
         mechanicManager.unregister();
         commandManager.unregister();

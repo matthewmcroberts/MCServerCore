@@ -2,6 +2,10 @@ package com.matthew.template.data.config.framework;
 
 public abstract class ConfigManager {
 
+    public ConfigManager() {
+
+    }
+
     public abstract void save();
 
     public abstract void reload();

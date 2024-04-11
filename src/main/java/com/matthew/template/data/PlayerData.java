@@ -24,7 +24,7 @@ public final class PlayerData {
         this.playerName = player.getDisplayName();
         this.uuid = player.getUniqueId();
         this.rank = rank;
-        this.isStaff = rank.isStaffRank();
+        this.isStaff = rank.isStaff();
         this.chatColor = rank.getChatColor();
         this.player = player;
         this.playTime = playTime;

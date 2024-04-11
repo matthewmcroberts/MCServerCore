@@ -9,6 +9,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,25 +23,32 @@ public class RankConfigManager extends ConfigManager {
 
     private final DataStorageModule module;
 
-    private final String path;
+    private final File rankFile;
 
-    //Use constructor to load file
+    private final YamlConfiguration config;
+
+    //TODO: Setup ConfigManager
     public RankConfigManager(JavaPlugin plugin) {
         this.plugin = plugin;
         this.moduleManager = ServerModuleManager.getInstance();
         this.module = moduleManager.getRegisteredModule(DataStorageModule.class);
-        this.path = "ranks.yml";
+        String path = "ranks.yml";
 
         plugin.saveResource(path, false);
 
-        File rankFile = new File(plugin.getDataFolder(), path);
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(rankFile);
+        this.rankFile = new File(plugin.getDataFolder(), path);
+        this.config = YamlConfiguration.loadConfiguration(rankFile);
+
+        loadConfig();
+
+    }
+
+    private void loadConfig() {
         Set<String> keys = config.getKeys(false);
 
         for (String key : keys) {
             ConfigurationSection section = config.getConfigurationSection(key);
             if (section == null) {
-                System.out.println("null");
                 continue;
             }
 
@@ -59,12 +68,32 @@ public class RankConfigManager extends ConfigManager {
 
     @Override
     public void save() {
+        final Set<Rank> ranks = module.getAllRanks();
 
+        for (Rank rank : ranks) {
+            String key = rank.getName();
+            ConfigurationSection section = config.createSection(key);
+            //section.set("INHERITS", rank.getInherits());
+            section.set("COLOR", rank.getColor());
+            section.set("CHAT_COLOR", rank.getChatColor());
+            section.set("PREFIX", rank.getPrefix());
+            section.set("IS_DEFAULT", rank.isDefault());
+            section.set("IS_STAFF", rank.isStaff());
+            section.set("PERMISSIONS", new ArrayList<>(rank.getPermissions()));
+        }
+
+        try {
+            config.save(rankFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void reload() {
+        module.clearRanks();
 
+        loadConfig();
     }
 
     @Override

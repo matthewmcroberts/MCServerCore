@@ -41,6 +41,10 @@ public final class DataStorageModule implements ServerModule {
         return cache.getRanks();
     }
 
+    public void clearRanks() {
+        cache.getRanks().clear();
+    }
+
     public boolean addPlayer(PlayerData player) {
         if ((exists(player))) {
             return false;
@@ -76,7 +80,7 @@ public final class DataStorageModule implements ServerModule {
 
     @Override
     public void teardown() {
-
+        clearRanks();
     }
 
     private static class Cache {
