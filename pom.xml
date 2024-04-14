@@ -1,147 +1,109 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<!-- Change to your own main package name. -->
-	<groupId>com.matthew.template</groupId>
+    <groupId>com.matthew.template</groupId>
 
-	<!-- Change to your plugin name, must be lower cased and match your end package name. No spaces. -->
-	<artifactId>servercore</artifactId>
+    <artifactId>servercore</artifactId>
 
-	<!-- Change to your plugin's name. Can contain capital letters, but do NOT use spaces. -->
-	<name>ServerCore</name>
+    <name>ServerCore</name>
 
-	<!-- Change to the appropriate plugin's version, starting at 1.0.0. -->
-	<version>1.0.0</version>
+    <version>1.0.0</version>
 
-	<!-- DO NOT EDIT. -->
-	<packaging>jar</packaging>
+    <packaging>jar</packaging>
 
-	<properties>
+    <properties>
 
-		<!-- Change to your name or the main project author. -->
-		<author>matthew</author>
+        <author>matthew</author>
 
-		<!-- Change to the full path where your main plugin class is located. -->
-		<main.class>com.matthew.template.ServerCore</main.class>
+        <main.class>com.matthew.template.ServerCore</main.class>
 
-		<!-- Change the Java version this plugin is built on.
 
-			 IMPORTANT: For Java 8, version is "1.8", for Java 11+ it is only "11" or "17".
+        <java.version>1.8</java.version>
 
-			 If you use 1.8 then your plugin will work on newer versions,
-			 but if you use "11" or "17" then it will NOT load on servers
-			 with previous Java versions. We recommend you stick with 1.8.
-			 -->
-		<java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
-		<!-- DO NOT EDIT. -->
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+    <repositories>
+        <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
 
-	<repositories>
-		<repository>
-			<id>spigot-repo</id>
-			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-		</repository>
-		<!-- DO NOT EDIT, used to pull Foundation from the JitPack site. -->
-		<repository>
-			<id>jitpack.io</id>
-			<url>https://jitpack.io</url>
-		</repository>
-	</repositories>
+    <dependencies>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.19.4-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>2.2</version>
+        </dependency>
+    </dependencies>
 
-	<dependencies>
-		<!-- (Optional) Access the server jar for NMS (groupId, artifactId and version do not matter,
-			 but keep version in artifactId and not in version if using multiple NMS imports,
-			 otherwise Maven will fail to import them correctly). -->
-		<dependency>
-			<groupId>org.spigotmc</groupId>
-			<artifactId>spigot-api</artifactId>
-			<version>1.19.4-R0.1-SNAPSHOT</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.dataformat</groupId>
-			<artifactId>jackson-dataformat-yaml</artifactId>
-			<version>2.17.0</version>
-		</dependency>
+    <build>
+        <finalName>${project.name}-${project.version}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
 
-	</dependencies>
+                <version>3.3.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
 
-	<!-- DO NOT EDIT unless you know what you're doing. -->
-	<build>
-		<finalName>${project.name}-${project.version}</finalName>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
+                <version>3.12.1</version>
+                <configuration>
+                    <source>18</source>
+                    <target>18</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
 
-				<!-- Change version to the latest one from
-					 https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-jar-plugin -->
-				<version>3.3.0</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-
-				<!-- Change version to the latest one from
-					 https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
-				<version>3.12.1</version>
-				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-
-				<!-- Change version to the latest one from
-					 https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-shade-plugin -->
-				<version>3.5.1</version>
-				<configuration>
-					<minimizeJar>true</minimizeJar>
-					<createSourcesJar>false</createSourcesJar>
-					<shadeSourcesContent>false</shadeSourcesContent>
-					<createDependencyReducedPom>false</createDependencyReducedPom>
-					<shadedArtifactAttached>false</shadedArtifactAttached>
-					<filters>
-						<filter>
-							<artifact>*:*</artifact>
-							<excludes>
-								<exclude>META-INF/license/**</exclude>
-								<exclude>META-INF/*</exclude>
-								<exclude>META-INF/maven/**</exclude>
-								<exclude>META-INF/versions/*/module-info.class</exclude>
-								<exclude>module-info.class</exclude>
-								<exclude>LICENSE</exclude>
-								<exclude>NOTICE</exclude>
-								<exclude>/*.txt</exclude>
-								<exclude>build.properties</exclude>
-								<exclude>com/fasterxml/jackson/databind/ext/Java7*</exclude>
-								<exclude>META-INF/services/com.fasterxml.jackson.core.ObjectCodec</exclude>
-								<exclude>META-INF/services/com.fasterxml.jackson.core.JsonFactory</exclude>
-							</excludes>
-						</filter>
-					</filters>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
-	</build>
+                <version>3.5.1</version>
+                <configuration>
+                    <minimizeJar>true</minimizeJar>
+                    <createSourcesJar>false</createSourcesJar>
+                    <shadeSourcesContent>false</shadeSourcesContent>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <shadedArtifactAttached>false</shadedArtifactAttached>
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+								<exclude>META-INF/MANIFEST.MF</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
 </project>

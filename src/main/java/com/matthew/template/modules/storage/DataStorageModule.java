@@ -36,7 +36,6 @@ public final class DataStorageModule implements ServerModule {
         return true;
     }
 
-
     public Set<Rank> getAllRanks() {
         return cache.getRanks();
     }

@@ -5,6 +5,7 @@ import com.matthew.template.modules.storage.DataStorageModule;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.io.IOException;
 
 public abstract class ConfigManager {
 
@@ -19,9 +20,8 @@ public abstract class ConfigManager {
 
     public abstract void save();
 
-    public abstract void reload();
+    public abstract void reload() throws IOException;
 
     public abstract void destroy();
 
-    //implement logic for copyFile, isNewFile, getKeys, hasKey, setString, hasString, getInt, setInt, hasBool, setBool, etc...
 }

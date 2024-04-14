@@ -1,26 +1,28 @@
-OWNER:
-   INHERITS: "ADMIN"
-   COLOR: "&c"
-   CHAT_COLOR: "&e"
-   PREFIX: "[OWNER]"
-   IS_DEFAULT: false
-   IS_STAFF: true
-   PERMISSIONS:
-     - "rank.use"
-ADMIN:
-   INHERITS: "MEMBER"
-   COLOR: "&c"
-   CHAT_COLOR: "&e"
-   PREFIX: "[ADMIN]"
-   IS_DEFAULT: false
-   IS_STAFF: true
-   PERMISSIONS:
-      - "rank.use"
-MEMBER:
-   INHERITS: ""
-   COLOR: "&7"
-   CHAT_COLOR: "&f"
-   PREFIX: "[MEMBER]"
-   IS_DEFAULT: false
-   IS_STAFF: false
-   PERMISSIONS:
+name: "OWNER"
+color: "&c"
+chatColor: "&e"
+prefix: "[OWNER]"
+isDefault: false
+isStaff: true
+permissions:
+  - "rank.use"
+
+---
+name: "ADMIN"
+color: "&c"
+chatColor: "&e"
+prefix: "[ADMIN]"
+isDefault: false
+isStaff: true
+permissions:
+  - "rank.use"
+
+---
+name: "MEMBER"
+color: "&7"
+chatColor: "&f"
+prefix: "[MEMBER]"
+isDefault: true
+isStaff: false
+permissions:
+    - ""

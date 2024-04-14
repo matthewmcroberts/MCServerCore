@@ -1,50 +1,73 @@
 package com.matthew.template.modules.ranks.structure;
 
 import com.matthew.template.modules.manager.ServerModuleManager;
-import org.bukkit.ChatColor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 public class Rank {
 
-    private final ServerModuleManager moduleManager = ServerModuleManager.getInstance();
-    private final String name;
-    private final Set<String> permissions;
-    private final String color;
-    private final String chatColor;
-    private final String prefix;
-    private final boolean isDefault;
-    private final boolean isStaffRank;
+    private final ServerModuleManager moduleManager;
+    private String name;
+    private List<String> permissions;
+    private String color;
+    private String chatColor;
+    private String prefix;
+    private boolean isDefault;
+    private boolean isStaff;
 
-    public Rank(String name, String color, String chatColor, String prefix, boolean isDefault, boolean isStaffRank, Set<String> permissions) {
+    public Rank() {
+        moduleManager = ServerModuleManager.getInstance();
+    }
+
+    public Rank(String name, String color, String chatColor, String prefix, boolean isDefault, boolean isStaff, List<String> permissions) {
         this.name = name;
         this.color = color;
         this.chatColor = chatColor;
         this.prefix = prefix;
         this.isDefault = isDefault;
         this.permissions = permissions;
-        this.isStaffRank = isStaffRank;
+        this.isStaff = isStaff;
+        moduleManager = ServerModuleManager.getInstance();
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(final String name) {
+        this.name = name;
+    }
+
     public String getColor() {
         return color;
+    }
+
+    public void setColor(final String color) {
+        this.color = color;
     }
 
     public String getPrefix() {
         return prefix;
     }
 
+    public void setPrefix(final String prefix) {
+        this.prefix = prefix;
+    }
+
     public boolean isDefault() {
         return isDefault;
     }
 
+    public void setIsDefault(final boolean isDefault) {
+        this.isDefault = isDefault;
+    }
+
     public boolean isStaff() {
-        return isStaffRank;
+        return isStaff;
+    }
+
+    public void setIsStaff(final boolean isStaff) {
+        this.isStaff = isStaff;
     }
 
     public boolean hasPermission(String node) {
@@ -59,11 +82,19 @@ public class Rank {
         return true;
     }
 
-    public Set<String> getPermissions() {
+    public List<String> getPermissions() {
         return permissions;
+    }
+
+    public void setPermissions(List<String> permissions) {
+        this.permissions = permissions;
     }
 
     public String getChatColor() {
         return chatColor;
+    }
+
+    public void setChatColor(String chatColor) {
+        this.chatColor = chatColor;
     }
 }

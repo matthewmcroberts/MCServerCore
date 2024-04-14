@@ -6,7 +6,10 @@ import com.matthew.template.generalevents.GeneralEventsManager;
 import com.matthew.template.modules.manager.ServerModuleManager;
 import com.matthew.template.modules.ranks.RankModule;
 import com.matthew.template.modules.storage.DataStorageModule;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.IOException;
 
 
 public final class ServerCore extends JavaPlugin {
@@ -35,7 +38,11 @@ public final class ServerCore extends JavaPlugin {
         moduleManager.setUp();
 
         //Load Ranks into cache
-        rankConfig = new RankConfigManager(this);
+        try {
+            rankConfig = new RankConfigManager(this);
+        } catch (IOException | InvalidConfigurationException e) {
+            throw new RuntimeException(e);
+        }
 
         getLogger().info("NativePractice loaded");
     }
