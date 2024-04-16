@@ -1,4 +1,4 @@
-package com.matthew.template.data;
+package com.matthew.template.modules.player.structure;
 
 import com.matthew.template.modules.ranks.structure.Rank;
 import org.bukkit.ChatColor;

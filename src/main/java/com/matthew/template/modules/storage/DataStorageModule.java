@@ -1,7 +1,7 @@
 package com.matthew.template.modules.storage;
 
 import com.matthew.template.api.ServerModule;
-import com.matthew.template.data.PlayerData;
+import com.matthew.template.modules.player.structure.PlayerData;
 import com.matthew.template.modules.ranks.structure.Rank;
 import org.bukkit.plugin.java.JavaPlugin;
 

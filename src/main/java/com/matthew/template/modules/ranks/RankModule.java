@@ -1,7 +1,7 @@
 package com.matthew.template.modules.ranks;
 
 import com.matthew.template.api.ServerModule;
-import com.matthew.template.data.PlayerData;
+import com.matthew.template.modules.player.structure.PlayerData;
 import com.matthew.template.modules.manager.ServerModuleManager;
 import com.matthew.template.modules.ranks.command.RankCommand;
 import com.matthew.template.modules.ranks.structure.Rank;
