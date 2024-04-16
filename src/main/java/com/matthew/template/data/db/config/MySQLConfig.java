@@ -19,7 +19,7 @@ public class MySQLConfig {
         return host;
     }
 
-    public void setHost(String host) {
+    public void setHost(final String host) {
         this.host = host;
     }
 
@@ -27,7 +27,7 @@ public class MySQLConfig {
         return port;
     }
 
-    public void setPort(int port) {
+    public void setPort(final int port) {
         this.port = port;
     }
 
@@ -35,7 +35,7 @@ public class MySQLConfig {
         return database;
     }
 
-    public void setDatabase(String database) {
+    public void setDatabase(final String database) {
         this.database = database;
     }
 
@@ -43,7 +43,7 @@ public class MySQLConfig {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(final String username) {
         this.username = username;
     }
 
@@ -51,7 +51,7 @@ public class MySQLConfig {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this.password = password;
     }
 }

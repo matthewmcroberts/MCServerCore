@@ -44,7 +44,11 @@ public final class ServerCore extends JavaPlugin {
             throw new RuntimeException(e);
         }
 
-        getLogger().info("NativePractice loaded");
+        //Load MySQL Data
+        
+
+
+        getLogger().info("ServerCore loaded");
     }
 
     @Override

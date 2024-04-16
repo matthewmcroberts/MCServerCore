@@ -35,7 +35,7 @@ public final class DataStorageModule implements ServerModule {
         cache.getRanks().remove(rank);
         return true;
     }
-
+    //TODO: Return a copy of set instead
     public Set<Rank> getAllRanks() {
         return cache.getRanks();
     }
@@ -60,6 +60,7 @@ public final class DataStorageModule implements ServerModule {
         return true;
     }
 
+    //TODO: Return a copy of list instead
     public List<PlayerData> getAllPlayerData() {
         return cache.getPlayers();
     }
