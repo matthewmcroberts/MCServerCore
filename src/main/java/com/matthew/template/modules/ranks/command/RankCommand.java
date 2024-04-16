@@ -8,11 +8,19 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class RankCommand implements CommandExecutor {
 
-    private final ServerModuleManager moduleManager = ServerModuleManager.getInstance();
-    RankModule rankModule = moduleManager.getRegisteredModule(RankModule.class);
+    private final JavaPlugin plugin;
+    private final ServerModuleManager moduleManager;
+    private final RankModule module;
+
+    public RankCommand(JavaPlugin plugin) {
+        this.plugin = plugin;
+        this.moduleManager = ServerModuleManager.getInstance();
+        this.module = moduleManager.getRegisteredModule(RankModule.class);
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -29,7 +37,7 @@ public class RankCommand implements CommandExecutor {
             return true;
         }
 
-        for(Rank rank: rankModule.getRanks()) {
+        for(Rank rank: module.getRanks()) {
             player.sendMessage(rank.getName() + ": " + rank.getPermissions().toString());
         }
 

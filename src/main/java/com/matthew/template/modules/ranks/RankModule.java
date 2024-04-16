@@ -47,7 +47,7 @@ public class RankModule implements ServerModule {
 
     @Override
     public void setUp() {
-        CommandExecutor rankCommand = new RankCommand();
+        CommandExecutor rankCommand = new RankCommand(plugin);
         Objects.requireNonNull(plugin.getCommand("rank")).setExecutor(rankCommand);
     }
 
