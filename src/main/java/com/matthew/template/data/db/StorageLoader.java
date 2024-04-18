@@ -10,18 +10,18 @@ public class StorageLoader {
         this.sqlConfiguration = sqlConfiguration;
     }
 
-    public MySQLStorageManager getStorageManager() {
-        return new MySQLStorageManager(sqlConfiguration);
+    public MySQLDataStorage getStorageManager() {
+        return new MySQLDataStorage(sqlConfiguration);
     }
 
-    public void loadData(MySQLStorageManager storageManager) {
+    public void loadData(MySQLDataStorage storageManager) {
         if(storageManager == null) {
             throw new IllegalArgumentException("Storage Manager must not be null");
         }
-        storageManager.loadAllPlayers();
+        //storageManager.loadAllPlayers();
     }
 
-    public void saveAllData(MySQLStorageManager storageManager) {
-        storageManager.saveAllPlayers();
+    public void saveAllData(MySQLDataStorage storageManager) {
+        //storageManager.saveAllPlayers();
     }
 }
