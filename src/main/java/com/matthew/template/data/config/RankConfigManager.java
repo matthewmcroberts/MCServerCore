@@ -28,7 +28,7 @@ public class RankConfigManager extends ConfigManager {
     }
 
     private void loadConfig() throws IOException {
-        List<Rank> ranks = serializer.loadObjectsFromYamlFile(this.rankFile, Rank.class);
+        List<Rank> ranks = serializer.deserializeFromYamlFile(this.rankFile, Rank.class);
         if (ranks != null) {
             for (Rank rank : ranks) {
                 module.addRank(rank);
@@ -43,7 +43,7 @@ public class RankConfigManager extends ConfigManager {
 
     @Override
     public void reload() throws IOException {
-        module.clearRanks();
+        //module.clearRanks();
         loadConfig();
     }
 

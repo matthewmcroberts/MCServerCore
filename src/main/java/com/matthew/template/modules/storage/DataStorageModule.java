@@ -3,6 +3,7 @@ package com.matthew.template.modules.storage;
 import com.matthew.template.api.ServerModule;
 import com.matthew.template.modules.player.structure.PlayerData;
 import com.matthew.template.modules.ranks.structure.Rank;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
@@ -21,7 +22,7 @@ public final class DataStorageModule implements ServerModule {
     }
 
     public boolean addRank(Rank rank) {
-        if ((exists(rank))) {
+        if ((contains(rank))) {
             return false;
         }
         cache.getRanks().add(rank);
@@ -29,7 +30,7 @@ public final class DataStorageModule implements ServerModule {
     }
 
     public boolean removeRank(Rank rank) {
-        if (!(exists(rank))) {
+        if (!(contains(rank))) {
             return false;
         }
         cache.getRanks().remove(rank);
@@ -40,12 +41,9 @@ public final class DataStorageModule implements ServerModule {
         return cache.getRanks();
     }
 
-    public void clearRanks() {
-        cache.getRanks().clear();
-    }
 
     public boolean addPlayer(PlayerData player) {
-        if ((exists(player))) {
+        if ((contains(player))) {
             return false;
         }
         cache.getPlayers().add(player);
@@ -53,7 +51,7 @@ public final class DataStorageModule implements ServerModule {
     }
 
     public boolean removePlayer(PlayerData player) {
-        if(!(exists(player))) {
+        if(!(contains(player))) {
             return false;
         }
         cache.getPlayers().remove(player);
@@ -65,13 +63,29 @@ public final class DataStorageModule implements ServerModule {
         return cache.getPlayers();
     }
 
-    private boolean exists(Rank rank) {
+    public boolean contains(Rank rank) {
         return cache.getRanks().contains(rank);
     }
 
-    private boolean exists(PlayerData playerData) {
+    public boolean contains(PlayerData playerData) {
         return cache.getPlayers().contains(playerData);
     }
+
+    private void clearRanks() {
+        cache.getRanks().clear();
+    }
+
+    private void clearPlayers() { cache.getPlayers().clear(); }
+
+    private boolean contains(Player playerData) {
+        for(PlayerData player: cache.getPlayers()) {
+            if(player.getName().equals(playerData.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     @Override
     public void setUp() {
@@ -81,6 +95,7 @@ public final class DataStorageModule implements ServerModule {
     @Override
     public void teardown() {
         clearRanks();
+        clearPlayers();
     }
 
     private static class Cache {

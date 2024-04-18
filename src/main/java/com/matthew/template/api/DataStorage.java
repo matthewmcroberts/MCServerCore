@@ -1,6 +1,7 @@
 package com.matthew.template.api;
 
 import com.matthew.template.modules.player.structure.PlayerData;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -13,10 +14,13 @@ public interface DataStorage {
     public CompletableFuture<Void> init();
 
     @NotNull
-    public CompletableFuture<PlayerData> load(@NotNull PlayerData player);
+    public CompletableFuture<PlayerData> load(Player player);
 
     @NotNull
-    public CompletableFuture<PlayerData> save(@NotNull PlayerData player);
+    public CompletableFuture<List<PlayerData>> load();
+
+    @NotNull
+    public CompletableFuture<PlayerData> save(@NotNull String playerUUID);
 
     @NotNull
     public CompletableFuture<List<PlayerData>> save(@NotNull Collection<? extends PlayerData> players);

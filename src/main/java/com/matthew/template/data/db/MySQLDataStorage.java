@@ -12,6 +12,7 @@ public class MySQLDataStorage extends SQLDataStorage {
 
     private final String CREATE_PLAYERS_TABLE = "";
     private final String INSERT_PLAYER_DATA = "";
+    private final String SELECT_ALL_PLAYER_DATA = "";
     private final String SELECT_PLAYER_DATA = "";
 
     private final MySQLConfig sqlConfig;
@@ -45,8 +46,11 @@ public class MySQLDataStorage extends SQLDataStorage {
 
     @Override
     protected @NotNull String getSelectAllPlayerDataQuery() {
-        return this.SELECT_PLAYER_DATA;
+        return this.SELECT_ALL_PLAYER_DATA;
     }
 
-
+    @Override
+    protected @NotNull String getSelectPlayerDataQuery() {
+        return SELECT_PLAYER_DATA;
+    }
 }

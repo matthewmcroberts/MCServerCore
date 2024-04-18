@@ -1,5 +1,7 @@
 package com.matthew.template.serializer;
 
+import com.google.gson.Gson;
+import com.matthew.template.modules.player.structure.PlayerData;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -15,7 +17,7 @@ public class Serializer {
     public Serializer() {
     }
 
-    public <T> List<T> loadObjectsFromYamlFile(File yamlFile, Class<T> clazz) throws IOException {
+    public <T> List<T> deserializeFromYamlFile(File yamlFile, Class<T> clazz) throws IOException {
         List<T> objects = new ArrayList<>();
         try (InputStream inputStream = new FileInputStream(yamlFile)) {
             LoaderOptions options = new LoaderOptions();
@@ -34,5 +36,10 @@ public class Serializer {
             throw new IllegalArgumentException("Error parsing YAML file: " + yamlFile.getAbsolutePath(), e);
         }
         return objects;
+    }
+
+    public <T> T deserializeFromJsonString(String jsonString, Class<T> clazz) {
+        Gson gson = new Gson();
+        return gson.fromJson(jsonString, clazz);
     }
 }
