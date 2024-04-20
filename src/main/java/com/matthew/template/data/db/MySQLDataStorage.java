@@ -10,10 +10,24 @@ import java.sql.SQLException;
 
 public class MySQLDataStorage extends SQLDataStorage {
 
-    private final String CREATE_PLAYERS_TABLE = "";
-    private final String INSERT_PLAYER_DATA = "";
-    private final String SELECT_ALL_PLAYER_DATA = "";
-    private final String SELECT_PLAYER_DATA = "";
+    private final String CREATE_PLAYERS_TABLE =
+            "CREATE TABLE `player_data` (\n" +
+            "  `technical_key` INT NOT NULL AUTO_INCREMENT,\n" +
+            "  `uuid` CHAR(36) NOT NULL UNIQUE,\n" +
+            "  `data` LONGTEXT NULL,\n" +
+            "  PRIMARY KEY (`technical_key`)\n" +
+            ");\n";
+    private final String INSERT_PLAYER_DATA =
+            "INSERT INTO player_data(\n" +
+            "   player_uuid,\n" +
+            "   data,\n" +
+            ") VALUES(?, ?)\n" +
+            "   ON DUPLICATE KEY UPDATE\n" +
+            "   data = VALUES(data);\n";
+
+    private final String SELECT_ALL_PLAYER_DATA = "SELECT * FROM player_data";
+
+    private final String SELECT_PLAYER_DATA = "SELECT * FROM player_data WHERE uuid=?";
 
     private final MySQLConfig sqlConfig;
     private final String connectionUrl;

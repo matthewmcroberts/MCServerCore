@@ -21,7 +21,6 @@ public abstract class SQLDataStorage implements DataStorage {
 
 
     private final Serializer serializer;
-
     private final DataStorageModule storageModule;
     private final PlayerModule playerModule;
 
