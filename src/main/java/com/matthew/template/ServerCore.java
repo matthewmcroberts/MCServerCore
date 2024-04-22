@@ -1,9 +1,13 @@
 package com.matthew.template;
 
+import com.matthew.template.api.DataStorage;
 import com.matthew.template.data.config.RankConfigManager;
+import com.matthew.template.data.db.MySQLDataStorage;
+import com.matthew.template.data.db.config.MySQLConfig;
 import com.matthew.template.generalcommands.GeneralCommandManager;
 import com.matthew.template.generalevents.GeneralEventsManager;
 import com.matthew.template.modules.manager.ServerModuleManager;
+import com.matthew.template.modules.player.PlayerModule;
 import com.matthew.template.modules.ranks.RankModule;
 import com.matthew.template.modules.storage.DataStorageModule;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -13,6 +17,8 @@ import java.io.IOException;
 
 
 public final class ServerCore extends JavaPlugin {
+
+    private DataStorage dataStorage;
 
     private ServerModuleManager moduleManager;
     private GeneralEventsManager mechanicManager;
@@ -34,7 +40,8 @@ public final class ServerCore extends JavaPlugin {
 
         //Modules Setup
         moduleManager = ServerModuleManager.getInstance();
-        moduleManager.registerModule(new DataStorageModule(this)).registerModule(new RankModule(this));
+        moduleManager.registerModule(new DataStorageModule(this))
+                .registerModule(new RankModule(this)).registerModule(new PlayerModule(this, this));
         moduleManager.setUp();
 
         //Load Ranks into cache
@@ -45,7 +52,14 @@ public final class ServerCore extends JavaPlugin {
         }
 
         //Load MySQL Data
-        
+        MySQLConfig sqlConfig = new MySQLConfig();
+        sqlConfig.setDatabase("testserver");
+        sqlConfig.setHost("127.0.0.1");
+        sqlConfig.setPort(3306);
+        sqlConfig.setUsername("root");
+        sqlConfig.setPassword("root");
+        dataStorage = new MySQLDataStorage(sqlConfig);
+        dataStorage.init();
 
 
         getLogger().info("ServerCore loaded");
@@ -58,5 +72,9 @@ public final class ServerCore extends JavaPlugin {
         moduleManager.teardown();
         mechanicManager.unregister();
         commandManager.unregister();
+    }
+
+    public DataStorage getDataStorage() {
+        return this.dataStorage;
     }
 }
