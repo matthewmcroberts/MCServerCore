@@ -64,9 +64,9 @@ public class PlayerDataListener implements Listener {
         Player player = e.getPlayer();
         PlayerData playerData = playerModule.getPlayerData(player);
 
-        if(playerData == null || !playerData.isModified()) {
-            return;
-        }
+        //if(playerData == null || !playerData.isModified()) {
+            //return;
+        //}
 
         this.dataStorage.save(playerData).exceptionally(ex-> {
             Bukkit.getLogger().severe(ex.getMessage());

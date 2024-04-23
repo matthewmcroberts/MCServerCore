@@ -1,6 +1,7 @@
 package com.matthew.template.serializer;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.matthew.template.modules.player.structure.PlayerData;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
@@ -43,8 +44,8 @@ public class Serializer {
         return gson.fromJson(jsonString, clazz);
     }
 
-    public <T> String serializeToJsonString(PlayerData player) {
-        Gson gson = new Gson();
+    public String serializePlayerToJsonString(PlayerData player) {
+        Gson gson = new GsonBuilder().registerTypeAdapter(PlayerData.class, new PlayerData.PlayerSerializer()).create();
         return gson.toJson(player);
     }
 }

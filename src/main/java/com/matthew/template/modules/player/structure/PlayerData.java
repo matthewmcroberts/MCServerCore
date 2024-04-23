@@ -1,8 +1,10 @@
 package com.matthew.template.modules.player.structure;
 
+import com.google.gson.*;
 import com.matthew.template.modules.ranks.structure.Rank;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.Type;
 import java.util.UUID;
 
 /*
@@ -66,5 +68,19 @@ public final class PlayerData {
 
     public void setModified(boolean modified) {
         isModified = modified;
+    }
+
+    public static class PlayerSerializer implements JsonSerializer<PlayerData> {
+        @Override
+        public JsonElement serialize(PlayerData player, Type type, JsonSerializationContext jsonSerializationContext) {
+            JsonObject result = new JsonObject();
+            result.add("name", new JsonPrimitive(player.getName()));
+            result.add("uuid", new JsonPrimitive(player.getUniqueId().toString()));
+            result.add("rank", new JsonPrimitive(player.getRank().getName()));
+            result.add("chatColor", new JsonPrimitive(player.getChatColor()));
+            result.add("isStaff", new JsonPrimitive(player.isStaff()));
+            result.add("playTime", new JsonPrimitive(player.getPlayTime()));
+            return result;
+        }
     }
 }
