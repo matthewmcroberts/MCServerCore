@@ -42,4 +42,9 @@ public class Serializer {
         Gson gson = new Gson();
         return gson.fromJson(jsonString, clazz);
     }
+
+    public <T> String serializeToJsonString(PlayerData player) {
+        Gson gson = new Gson();
+        return gson.toJson(player);
+    }
 }

@@ -20,7 +20,7 @@ public interface DataStorage {
     public CompletableFuture<List<PlayerData>> load();
 
     @NotNull
-    public CompletableFuture<PlayerData> save(@NotNull String playerUUID);
+    public CompletableFuture<PlayerData> save(@NotNull PlayerData player);
 
     @NotNull
     public CompletableFuture<List<PlayerData>> save(@NotNull Collection<? extends PlayerData> players);

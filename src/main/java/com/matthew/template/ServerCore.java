@@ -18,6 +18,7 @@ import java.io.IOException;
 
 public final class ServerCore extends JavaPlugin {
 
+    private static ServerCore instance;
     private DataStorage dataStorage;
 
     private ServerModuleManager moduleManager;
@@ -29,6 +30,7 @@ public final class ServerCore extends JavaPlugin {
     //open database connection and load necessary data into cache
     @Override
     public void onEnable() {
+        instance = this;
 
         //General Events Setup
         mechanicManager = new GeneralEventsManager(this);
@@ -41,8 +43,8 @@ public final class ServerCore extends JavaPlugin {
         //Modules Setup
         moduleManager = ServerModuleManager.getInstance();
         moduleManager.registerModule(new DataStorageModule(this))
-                .registerModule(new RankModule(this)).registerModule(new PlayerModule(this, this));
-        moduleManager.setUp();
+                .registerModule(new RankModule(this))
+                .registerModule(new PlayerModule(this));
 
         //Load Ranks into cache
         try {
@@ -57,11 +59,14 @@ public final class ServerCore extends JavaPlugin {
         sqlConfig.setHost("127.0.0.1");
         sqlConfig.setPort(3306);
         sqlConfig.setUsername("root");
-        sqlConfig.setPassword("root");
+        sqlConfig.setPassword("");
         dataStorage = new MySQLDataStorage(sqlConfig);
         dataStorage.init();
 
+        moduleManager.setUp();
 
+
+        getLogger().info(moduleManager.getRegisteredModules().toString());
         getLogger().info("ServerCore loaded");
     }
 
@@ -76,5 +81,9 @@ public final class ServerCore extends JavaPlugin {
 
     public DataStorage getDataStorage() {
         return this.dataStorage;
+    }
+
+    public static ServerCore getInstance() {
+        return instance;
     }
 }

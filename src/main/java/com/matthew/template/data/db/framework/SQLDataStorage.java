@@ -6,6 +6,7 @@ import com.matthew.template.modules.player.PlayerModule;
 import com.matthew.template.modules.player.structure.PlayerData;
 import com.matthew.template.modules.storage.DataStorageModule;
 import com.matthew.template.serializer.Serializer;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -52,12 +53,12 @@ public abstract class SQLDataStorage implements DataStorage {
     @NotNull
     @Override
     public CompletableFuture<PlayerData> load(Player player) {
-        if(playerModule.isLoaded(player)) { //player for some reason is already loaded in the cache
+        if (playerModule.isLoaded(player)) { //player for some reason is already loaded in the cache
             return CompletableFuture.completedFuture(playerModule.getPlayerData(player));
         }
 
         return CompletableFuture.supplyAsync(() -> {
-            try(Connection connection = openConnection()) {
+            try (Connection connection = openConnection()) {
                 PreparedStatement statement = connection.prepareStatement(getSelectPlayerDataQuery());
 
                 ResultSet result = statement.executeQuery();
@@ -73,14 +74,14 @@ public abstract class SQLDataStorage implements DataStorage {
     @Override
     public CompletableFuture<List<PlayerData>> load() {
         return CompletableFuture.supplyAsync(() -> {
-            try(Connection connection = openConnection()) {
+            try (Connection connection = openConnection()) {
                 PreparedStatement statement = connection.prepareStatement(getSelectAllPlayerDataQuery());
 
                 ResultSet result = statement.executeQuery();
-                if(result.next()) {
+                if (result.next()) {
 
                 }
-            } catch(SQLException e) {
+            } catch (SQLException e) {
                 throw new RuntimeException("Failed to load player data", e);
             }
             return null;
@@ -90,9 +91,22 @@ public abstract class SQLDataStorage implements DataStorage {
 
     @NotNull
     @Override
-    public CompletableFuture<PlayerData> save(@NotNull String playerUUID) {
-        return null;
-
+    public CompletableFuture<PlayerData> save(@NotNull PlayerData player) {
+        if (!player.isModified()) {
+            return CompletableFuture.completedFuture(player);
+        }
+        return CompletableFuture.supplyAsync(() -> {
+            try (Connection connection = openConnection()) {
+                PreparedStatement statement = connection.prepareStatement(getInsertPlayerDataStatement());
+                String jsonData = serializer.serializeToJsonString(player);
+                statement.setString(1, player.getUniqueId().toString());
+                statement.setString(2, jsonData);
+                statement.execute();
+                return player;
+            } catch (SQLException e) {
+                throw new RuntimeException("Failed to save player data", e);
+            }
+        });
     }
 
     @NotNull
@@ -122,7 +136,7 @@ public abstract class SQLDataStorage implements DataStorage {
     private PlayerData handleResult(ResultSet results) throws SQLException {
         String json = results.getString("data");
 
-        if(json == null) {
+        if (json == null) {
             return null;
         }
 

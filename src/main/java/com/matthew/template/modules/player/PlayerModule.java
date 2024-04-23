@@ -3,7 +3,7 @@ package com.matthew.template.modules.player;
 import com.matthew.template.ServerCore;
 import com.matthew.template.api.ServerModule;
 import com.matthew.template.modules.manager.ServerModuleManager;
-import com.matthew.template.modules.player.listeners.PlayerJoinListener;
+import com.matthew.template.modules.player.listeners.PlayerDataListener;
 import com.matthew.template.modules.player.structure.PlayerData;
 import com.matthew.template.modules.storage.DataStorageModule;
 import org.bukkit.Bukkit;
@@ -12,13 +12,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class PlayerModule implements ServerModule {
 
-    private final ServerCore instance;
     private final JavaPlugin plugin;
     private final DataStorageModule module;
 
-    public PlayerModule(ServerCore instance, JavaPlugin plugin) {
+    public PlayerModule(JavaPlugin plugin) {
         final ServerModuleManager moduleManager = ServerModuleManager.getInstance();
-        this.instance = instance;
         this.plugin = plugin;
         module = moduleManager.getRegisteredModule(DataStorageModule.class);
 
@@ -50,7 +48,7 @@ public class PlayerModule implements ServerModule {
 
     @Override
     public void setUp() {
-        Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(instance, plugin), plugin);
+        Bukkit.getPluginManager().registerEvents(new PlayerDataListener(plugin), plugin);
     }
 
     @Override

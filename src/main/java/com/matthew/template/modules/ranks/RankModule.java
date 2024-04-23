@@ -45,6 +45,15 @@ public class RankModule implements ServerModule {
         return null;
     }
 
+    public Rank getDefaultRank() {
+        for (Rank rank : getRanks()) {
+            if (rank.isDefault()) {
+                return rank;
+            }
+        }
+        throw new NullPointerException("Default rank cannot be null in ranks.yml");
+    }
+
     @Override
     public void setUp() {
         CommandExecutor rankCommand = new RankCommand(plugin);
