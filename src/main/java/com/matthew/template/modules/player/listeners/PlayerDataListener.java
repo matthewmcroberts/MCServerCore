@@ -44,17 +44,21 @@ public class PlayerDataListener implements Listener {
         Player player = e.getPlayer();
 
         this.dataStorage.load(player).whenComplete((loadedPlayer, ex) -> {
+            Bukkit.getLogger().info(String.valueOf(loadedPlayer == null));
             if (loadedPlayer == null) {
                 try {
                     Rank defaultRank = rankModule.getDefaultRank();
                     PlayerData newPlayer = new PlayerData(player, rankModule.getDefaultRank(), 0L);
+                    newPlayer.setModified(true);
                     storageModule.addPlayer(newPlayer);
+                    player.sendMessage(newPlayer.toString());
                 } catch (NullPointerException ex2) {
                     plugin.getLogger().severe(ex2.getMessage());
                     //going to want to do something other than just not loading the new player
                 }
                 return;
             }
+            loadedPlayer.setModified(false);
             storageModule.addPlayer(loadedPlayer);
         });
     }
@@ -63,14 +67,19 @@ public class PlayerDataListener implements Listener {
     public void onQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
         PlayerData playerData = playerModule.getPlayerData(player);
+        Bukkit.getLogger().info(storageModule.getAllPlayerData().toString());
 
-        //if(playerData == null || !playerData.isModified()) {
-            //return;
-        //}
+        //TODO: implement removePlayer in the playerModule rather than grabbing copy of cache
+        storageModule.getAllPlayerData().remove(playerData);
+        Bukkit.getLogger().info(storageModule.getAllPlayerData().toString());
+        if(playerData == null || !playerData.isModified()) {
+            return;
+        }
 
         this.dataStorage.save(playerData).exceptionally(ex-> {
             Bukkit.getLogger().severe(ex.getMessage());
             return null;
         });
+
     }
 }

@@ -18,12 +18,10 @@ public class MySQLDataStorage extends SQLDataStorage {
             "  PRIMARY KEY (`technical_key`)\n" +
             ");\n";
     private final String INSERT_PLAYER_DATA =
-            "INSERT INTO player_data(\n" +
-            "   player_uuid,\n" +
-            "   data,\n" +
-            ") VALUES(?, ?)\n" +
-            "   ON DUPLICATE KEY UPDATE\n" +
-            "   data = VALUES(data);\n";
+            "INSERT INTO player_data(uuid, data)\n" +
+            "VALUES(?, ?)\n" +
+            "ON DUPLICATE KEY UPDATE\n" +
+            "data = VALUES(data);";
 
     private final String SELECT_ALL_PLAYER_DATA = "SELECT * FROM player_data";
 

@@ -70,6 +70,17 @@ public final class PlayerData {
         isModified = modified;
     }
 
+    @Override
+    public String toString() {
+        return "name: " + getName()
+                + " uuid: " + getUniqueId().toString()
+                + " rank: " + getRank().getName()
+                + " chatColor: " + getChatColor()
+                + " isStaff: " + isStaff()
+                + " playTime: " + getPlayTime()
+                + " isModified: " + isModified();
+    }
+
     public static class PlayerSerializer implements JsonSerializer<PlayerData> {
         @Override
         public JsonElement serialize(PlayerData player, Type type, JsonSerializationContext jsonSerializationContext) {

@@ -6,6 +6,7 @@ import com.matthew.template.modules.player.PlayerModule;
 import com.matthew.template.modules.player.structure.PlayerData;
 import com.matthew.template.modules.storage.DataStorageModule;
 import com.matthew.template.serializer.Serializer;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -91,9 +92,9 @@ public abstract class SQLDataStorage implements DataStorage {
     @NotNull
     @Override
     public CompletableFuture<PlayerData> save(@NotNull PlayerData player) {
-        //if (!player.isModified()) {
-            //return CompletableFuture.completedFuture(player);
-        //}
+        if (!player.isModified()) {
+            return CompletableFuture.completedFuture(player);
+        }
         return CompletableFuture.supplyAsync(() -> {
             try (Connection connection = openConnection()) {
                 PreparedStatement statement = connection.prepareStatement(getInsertPlayerDataStatement());
@@ -101,7 +102,6 @@ public abstract class SQLDataStorage implements DataStorage {
                 statement.setString(1, player.getUniqueId().toString());
                 statement.setString(2, jsonData);
                 statement.execute();
-                connection.commit();
                 return player;
             } catch (SQLException e) {
                 throw new RuntimeException("Failed to save player data: " + e.getMessage());
@@ -141,6 +141,7 @@ public abstract class SQLDataStorage implements DataStorage {
         }
 
         PlayerData newPlayer = serializer.deserializeFromJsonString(json, PlayerData.class);
+        Bukkit.getLogger().info(newPlayer.toString());
         storageModule.addPlayer(newPlayer);
         return newPlayer;
     }
