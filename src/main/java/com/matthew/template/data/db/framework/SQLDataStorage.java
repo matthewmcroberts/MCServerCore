@@ -60,10 +60,15 @@ public abstract class SQLDataStorage implements DataStorage {
         return CompletableFuture.supplyAsync(() -> {
             try (Connection connection = openConnection()) {
                 PreparedStatement statement = connection.prepareStatement(getSelectPlayerDataQuery());
-
+                statement.setString(1, player.getUniqueId().toString());
                 ResultSet result = statement.executeQuery();
 
-                return (result.next()) ? this.handleResult(result) : null;
+                if(result.next()) {
+                    return this.handleResult(result);
+                }
+
+
+                return null;
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -135,14 +140,13 @@ public abstract class SQLDataStorage implements DataStorage {
 
     private PlayerData handleResult(ResultSet results) throws SQLException {
         String json = results.getString("data");
-
         if (json == null) {
             return null;
         }
 
         PlayerData newPlayer = serializer.deserializeFromJsonString(json, PlayerData.class);
-        Bukkit.getLogger().info(newPlayer.toString());
         storageModule.addPlayer(newPlayer);
+        Bukkit.getLogger().info(newPlayer.getName());
         return newPlayer;
     }
 

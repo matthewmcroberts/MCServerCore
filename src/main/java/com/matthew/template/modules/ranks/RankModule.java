@@ -45,6 +45,15 @@ public class RankModule implements ServerModule {
         return null;
     }
 
+    public Rank getRank(String name) {
+        for(Rank rank: storageModule.getAllRanks()) {
+            if(rank.getName().equalsIgnoreCase(name)) {
+                return rank;
+            }
+        }
+        return null;
+    }
+
     public Rank getDefaultRank() {
         for (Rank rank : getRanks()) {
             if (rank.isDefault()) {

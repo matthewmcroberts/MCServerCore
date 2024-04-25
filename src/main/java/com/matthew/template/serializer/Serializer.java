@@ -3,6 +3,7 @@ package com.matthew.template.serializer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.matthew.template.modules.player.structure.PlayerData;
+import org.bukkit.Bukkit;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -40,7 +41,7 @@ public class Serializer {
     }
 
     public <T> T deserializeFromJsonString(String jsonString, Class<T> clazz) {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().registerTypeAdapter(PlayerData.class, new PlayerData.PlayerDeserializer()).create();
         return gson.fromJson(jsonString, clazz);
     }
 

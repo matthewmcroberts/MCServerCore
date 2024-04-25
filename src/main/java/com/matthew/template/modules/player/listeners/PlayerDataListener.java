@@ -44,14 +44,17 @@ public class PlayerDataListener implements Listener {
         Player player = e.getPlayer();
 
         this.dataStorage.load(player).whenComplete((loadedPlayer, ex) -> {
-            Bukkit.getLogger().info(String.valueOf(loadedPlayer == null));
+            if (ex != null) {
+                Bukkit.getLogger().severe("Failed to load player data: " + ex.getMessage());
+                return;
+            }
+
             if (loadedPlayer == null) {
                 try {
                     Rank defaultRank = rankModule.getDefaultRank();
                     PlayerData newPlayer = new PlayerData(player, rankModule.getDefaultRank(), 0L);
                     newPlayer.setModified(true);
                     storageModule.addPlayer(newPlayer);
-                    player.sendMessage(newPlayer.toString());
                 } catch (NullPointerException ex2) {
                     plugin.getLogger().severe(ex2.getMessage());
                     //going to want to do something other than just not loading the new player
