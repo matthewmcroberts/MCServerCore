@@ -13,13 +13,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class PlayerModule implements ServerModule {
 
     private final JavaPlugin plugin;
-    private final DataStorageModule module;
+    private DataStorageModule storageModule;
 
     public PlayerModule(JavaPlugin plugin) {
-        final ServerModuleManager moduleManager = ServerModuleManager.getInstance();
         this.plugin = plugin;
-        module = moduleManager.getRegisteredModule(DataStorageModule.class);
-
     }
 
     /**
@@ -29,7 +26,7 @@ public class PlayerModule implements ServerModule {
      * @return a boolean for if the specified player is already in the cache
      */
     public boolean isLoaded(Player player) {
-        for(PlayerData playerData: module.getAllPlayerData()) {
+        for(PlayerData playerData: storageModule.getAllPlayerData()) {
             if(playerData.getName().equals(player.getName())) {
                 return true;
             }
@@ -38,7 +35,7 @@ public class PlayerModule implements ServerModule {
     }
 
     public PlayerData getPlayerData(Player player) {
-        for(PlayerData playerData: module.getAllPlayerData()) {
+        for(PlayerData playerData: storageModule.getAllPlayerData()) {
             if(playerData.getName().equals(player.getName())) {
                 return playerData;
             }
@@ -48,6 +45,7 @@ public class PlayerModule implements ServerModule {
 
     @Override
     public void setUp() {
+        this.storageModule = ServerModuleManager.getInstance().getRegisteredModule(DataStorageModule.class);
         Bukkit.getPluginManager().registerEvents(new PlayerDataListener(plugin), plugin);
     }
 

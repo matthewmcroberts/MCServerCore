@@ -17,12 +17,10 @@ public class RankModule implements ServerModule {
 
     private final JavaPlugin plugin;
 
-    private final DataStorageModule storageModule;
+    private DataStorageModule storageModule;
 
     public RankModule(JavaPlugin plugin) {
         this.plugin = plugin;
-        ServerModuleManager moduleManager = ServerModuleManager.getInstance();
-        this.storageModule = moduleManager.getRegisteredModule(DataStorageModule.class);
     }
 
     public Set<Rank> getRanks() {
@@ -65,6 +63,7 @@ public class RankModule implements ServerModule {
 
     @Override
     public void setUp() {
+        this.storageModule = ServerModuleManager.getInstance().getRegisteredModule(DataStorageModule.class);
         CommandExecutor rankCommand = new RankCommand(plugin);
         Objects.requireNonNull(plugin.getCommand("rank")).setExecutor(rankCommand);
     }
