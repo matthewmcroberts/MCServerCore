@@ -33,7 +33,7 @@ public final class PlayerData {
         this.isModified = false;
     }
 
-    private PlayerData(String name, UUID uuid, Rank rank, String chatColor, boolean isStaff, long playTime) {
+    public PlayerData(String name, UUID uuid, Rank rank, String chatColor, boolean isStaff, long playTime) {
         this.name = name;
         this.uuid = uuid;
         this.rank = rank;
@@ -93,44 +93,5 @@ public final class PlayerData {
                 + " isStaff: " + isStaff()
                 + " playTime: " + getPlayTime()
                 + " isModified: " + isModified();
-    }
-
-    public static class PlayerSerializer implements JsonSerializer<PlayerData> {
-        @Override
-        public JsonElement serialize(PlayerData player, Type type, JsonSerializationContext jsonSerializationContext) {
-            JsonObject result = new JsonObject();
-            result.add("name", new JsonPrimitive(player.getName()));
-            result.add("uuid", new JsonPrimitive(player.getUniqueId().toString()));
-            result.add("rank", new JsonPrimitive(player.getRank().getName()));
-            result.add("chatColor", new JsonPrimitive(player.getChatColor()));
-            result.add("isStaff", new JsonPrimitive(player.isStaff()));
-            result.add("playTime", new JsonPrimitive(player.getPlayTime()));
-            return result;
-        }
-    }
-
-    public static class PlayerDeserializer implements JsonDeserializer<PlayerData> {
-
-        private final RankModule module;
-
-        public PlayerDeserializer() {
-            final ServerModuleManager manager = ServerModuleManager.getInstance();
-            this.module = manager.getRegisteredModule(RankModule.class);
-        }
-
-        @Override
-        public PlayerData deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
-            JsonObject jsonObject = jsonElement.getAsJsonObject();
-
-            String name = jsonObject.getAsJsonPrimitive("name").getAsString();
-            UUID uuid = UUID.fromString(jsonObject.getAsJsonPrimitive("uuid").getAsString());
-            String rankName = jsonObject.getAsJsonPrimitive("rank").getAsString();
-            Rank rank = module.getRank(rankName);
-            String chatColor = jsonObject.getAsJsonPrimitive("chatColor").getAsString();
-            boolean isStaff = jsonObject.getAsJsonPrimitive("isStaff").getAsBoolean();
-            long playTime = jsonObject.getAsJsonPrimitive("playTime").getAsLong();
-
-            return new PlayerData(name, uuid, rank, chatColor, isStaff, playTime);
-        }
     }
 }

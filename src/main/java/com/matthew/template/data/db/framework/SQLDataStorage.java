@@ -5,6 +5,7 @@ import com.matthew.template.modules.manager.ServerModuleManager;
 import com.matthew.template.modules.player.PlayerModule;
 import com.matthew.template.modules.player.structure.PlayerData;
 import com.matthew.template.modules.storage.DataStorageModule;
+import com.matthew.template.serializer.adapters.PlayerSerializer;
 import com.matthew.template.serializer.Serializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -103,7 +104,7 @@ public abstract class SQLDataStorage implements DataStorage {
         return CompletableFuture.supplyAsync(() -> {
             try (Connection connection = openConnection()) {
                 PreparedStatement statement = connection.prepareStatement(getInsertPlayerDataStatement());
-                String jsonData = serializer.serializePlayerToJsonString(player);
+                String jsonData = serializer.serializeObjectToJsonString(player, PlayerData.class, PlayerSerializer.class);
                 statement.setString(1, player.getUniqueId().toString());
                 statement.setString(2, jsonData);
                 statement.execute();
@@ -144,7 +145,7 @@ public abstract class SQLDataStorage implements DataStorage {
             return null;
         }
 
-        PlayerData newPlayer = serializer.deserializeFromJsonString(json, PlayerData.class);
+        PlayerData newPlayer = serializer.deserializeObjectFromJsonString(json, PlayerData.class, PlayerSerializer.class);
         storageModule.addPlayer(newPlayer);
         Bukkit.getLogger().info(newPlayer.getName());
         return newPlayer;
