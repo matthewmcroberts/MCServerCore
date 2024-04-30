@@ -8,7 +8,6 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.io.IOException;
@@ -42,10 +41,14 @@ public class RankConfigManager extends ConfigManager {
             Files.write(rankFile.toPath(), getDefaultYamlString().getBytes(), StandardOpenOption.CREATE);
         }
 
-        Bukkit.getLogger().info(new String(Files.readAllBytes(rankFile.toPath()), StandardCharsets.UTF_8));
-
         List<Rank> ranks = serializer.deserializeFromYamlFile(this.rankFile, Rank.class);
+
         for (Rank rank : ranks) {
+            if (!rank.hasAllProperties()) {
+                Bukkit.getLogger().info("Failed to load " + rank.getName() + " rank. Missing property/properties in rank.yml");
+                continue; //do not load rank
+            }
+
             module.addRank(rank);
         }
     }

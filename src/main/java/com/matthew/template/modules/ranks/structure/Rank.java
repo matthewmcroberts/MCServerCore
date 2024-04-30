@@ -106,4 +106,22 @@ public class Rank {
     public void setChatColor(String chatColor) {
         this.chatColor = chatColor;
     }
+
+    public boolean hasAllProperties() {
+        return this.name != null || this.color != null || this.chatColor != null || this.prefix != null || this.permissions != null;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Rank{" +
+                "name='" + name + '\'' +
+                ", permissions=" + permissions +
+                ", color='" + color + '\'' +
+                ", chatColor='" + chatColor + '\'' +
+                ", prefix='" + prefix + '\'' +
+                ", isDefault=" + isDefault +
+                ", isStaff=" + isStaff +
+                '}';
+    }
 }

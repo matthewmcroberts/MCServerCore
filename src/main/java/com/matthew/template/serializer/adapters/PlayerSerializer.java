@@ -10,7 +10,6 @@ import com.matthew.template.modules.ranks.structure.Rank;
 import java.lang.reflect.Type;
 import java.util.UUID;
 
-//TODO: ADD NULL CHECKS IN SERIALIZE AND DESERIALIZE
 public final class PlayerSerializer implements JsonSerializable<PlayerData> {
 
     private final RankModule rankModule;
@@ -20,9 +19,9 @@ public final class PlayerSerializer implements JsonSerializable<PlayerData> {
     }
 
     @Override
+
     public PlayerData deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
         JsonObject jsonObject = jsonElement.getAsJsonObject();
-
         String name = jsonObject.getAsJsonPrimitive("name").getAsString();
         UUID uuid = UUID.fromString(jsonObject.getAsJsonPrimitive("uuid").getAsString());
         String rankName = jsonObject.getAsJsonPrimitive("rank").getAsString();
@@ -31,7 +30,8 @@ public final class PlayerSerializer implements JsonSerializable<PlayerData> {
         boolean isStaff = jsonObject.getAsJsonPrimitive("isStaff").getAsBoolean();
         long playTime = jsonObject.getAsJsonPrimitive("playTime").getAsLong();
 
-        return new PlayerData(name, uuid, rank, chatColor, isStaff, playTime);    }
+        return new PlayerData(name, uuid, rank, chatColor, isStaff, playTime);
+    }
 
     @Override
     public JsonElement serialize(PlayerData playerData, Type type, JsonSerializationContext jsonSerializationContext) {
