@@ -10,6 +10,7 @@ import com.matthew.template.modules.ranks.structure.Rank;
 import java.lang.reflect.Type;
 import java.util.UUID;
 
+//TODO: ADD NULL CHECKS IN SERIALIZE AND DESERIALIZE
 public final class PlayerSerializer implements JsonSerializable<PlayerData> {
 
     private final RankModule rankModule;

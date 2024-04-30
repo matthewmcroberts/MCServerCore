@@ -2,6 +2,8 @@ package com.matthew.template.modules.ranks.structure;
 
 import com.matthew.template.modules.manager.ServerModuleManager;
 
+import java.beans.ConstructorProperties;
+import java.util.Collections;
 import java.util.List;
 
 public class Rank {
@@ -15,7 +17,14 @@ public class Rank {
     private boolean isDefault;
     private boolean isStaff;
 
+    //called during snakeyaml reflection in RankConfigManager if rank.yml doesn't exist
     public Rank() {
+        moduleManager = ServerModuleManager.getInstance();
+    }
+
+    //called during snakeyaml reflection in RankConfigManager if rank.yml is empty
+    public Rank(String name) {
+        this.name = name;
         moduleManager = ServerModuleManager.getInstance();
     }
 
@@ -83,7 +92,7 @@ public class Rank {
     }
 
     public List<String> getPermissions() {
-        return permissions;
+        return permissions != null ? permissions : Collections.emptyList();
     }
 
     public void setPermissions(List<String> permissions) {

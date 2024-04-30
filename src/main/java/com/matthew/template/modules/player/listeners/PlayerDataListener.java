@@ -57,7 +57,7 @@ public class PlayerDataListener implements Listener {
                     storageModule.addPlayer(newPlayer);
                 } catch (NullPointerException ex2) {
                     plugin.getLogger().severe(ex2.getMessage());
-                    //going to want to do something other than just not loading the new player
+                    //TODO: going to want to do something other than just not loading the new player if no default rank is found
                 }
                 return;
             }
@@ -75,11 +75,11 @@ public class PlayerDataListener implements Listener {
         //TODO: implement removePlayer in the playerModule rather than grabbing copy of cache
         storageModule.getAllPlayerData().remove(playerData);
         Bukkit.getLogger().info(storageModule.getAllPlayerData().toString());
-        if(playerData == null || !playerData.isModified()) {
+        if (playerData == null || !playerData.isModified()) {
             return;
         }
 
-        this.dataStorage.save(playerData).exceptionally(ex-> {
+        this.dataStorage.save(playerData).exceptionally(ex -> {
             Bukkit.getLogger().severe(ex.getMessage());
             return null;
         });

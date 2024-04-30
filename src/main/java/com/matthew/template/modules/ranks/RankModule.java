@@ -24,7 +24,6 @@ public class RankModule implements ServerModule {
     }
 
     public Set<Rank> getRanks() {
-        assert storageModule != null;
         return storageModule.getAllRanks();
     }
 
