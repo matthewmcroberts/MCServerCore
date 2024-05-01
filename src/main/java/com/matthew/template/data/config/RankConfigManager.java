@@ -45,7 +45,7 @@ public class RankConfigManager extends ConfigManager {
 
         for (Rank rank : ranks) {
             if (!rank.hasAllProperties()) {
-                Bukkit.getLogger().info("Failed to load " + rank.getName() + " rank. Missing property/properties in rank.yml");
+                Bukkit.getLogger().severe("Failed to load " + rank.getName() + " rank. Missing property/properties in ranks.yml");
                 continue; //do not load rank
             }
 
