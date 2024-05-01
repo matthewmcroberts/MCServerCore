@@ -63,6 +63,22 @@ public final class DataStorageModule implements ServerModule {
         return true;
     }
 
+    public Rank getRank(String rankName) {
+        for(Rank rank: cache.getRanks()) {
+            if(rank.getName().equalsIgnoreCase(rankName)) {
+                return rank;
+            }
+        }
+        return null;
+    }
+
+    public Rank getRank(Player player) {
+        if(isLoaded(player)) {
+            return Objects.requireNonNull(getPlayerData(player)).getRank();
+        }
+        return null;
+    }
+
     /**
      * Retrieves all ranks stored in cache.
      *
@@ -78,7 +94,7 @@ public final class DataStorageModule implements ServerModule {
      * @param player The PlayerData object to add.
      * @return True if the player's data was successfully added, false otherwise.
      */
-    public boolean addPlayer(PlayerData player) {
+    public boolean addPlayerData(PlayerData player) {
         if ((containsPlayer(player))) {
             return false;
         }
@@ -92,12 +108,21 @@ public final class DataStorageModule implements ServerModule {
      * @param player The PlayerData object to remove.
      * @return True if the player's data was successfully removed, false otherwise.
      */
-    public boolean removePlayer(PlayerData player) {
+    public boolean removePlayerData(PlayerData player) {
         if(!(containsPlayer(player))) {
             return false;
         }
         cache.getPlayers().remove(player);
         return true;
+    }
+
+    public PlayerData getPlayerData(Player player) {
+        for(PlayerData playerData: cache.getPlayers()) {
+            if(playerData.getName().equals(player.getName())) {
+                return playerData;
+            }
+        }
+        return null;
     }
 
     /**
@@ -129,15 +154,9 @@ public final class DataStorageModule implements ServerModule {
         return cache.getPlayers().contains(playerData);
     }
 
-    /**
-     * Checks if a player is contained in cache by name.
-     *
-     * @param playerData The Player object to check.
-     * @return True if the player is contained, false otherwise.
-     */
-    private boolean contains(Player playerData) {
-        for(PlayerData player: cache.getPlayers()) {
-            if(player.getName().equals(playerData.getName())) {
+    public boolean isLoaded(Player player) {
+        for(PlayerData playerData: cache.getPlayers()) {
+            if(playerData.getName().equals(player.getName())) {
                 return true;
             }
         }

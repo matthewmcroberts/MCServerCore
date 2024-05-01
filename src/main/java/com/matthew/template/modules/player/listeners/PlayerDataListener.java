@@ -52,14 +52,14 @@ public class PlayerDataListener implements Listener {
                     Rank defaultRank = rankModule.getDefaultRank();
                     PlayerData newPlayer = new PlayerData(player, defaultRank, 0L);
                     newPlayer.setModified(true);
-                    storageModule.addPlayer(newPlayer);
+                    storageModule.addPlayerData(newPlayer);
                 } catch (NullPointerException ex2) {
                     Bukkit.getLogger().severe(ex2.getMessage());
                 }
                 return;
             }
             loadedPlayer.setModified(false);
-            storageModule.addPlayer(loadedPlayer);
+            storageModule.addPlayerData(loadedPlayer);
         });
     }
 
@@ -67,7 +67,7 @@ public class PlayerDataListener implements Listener {
     public void onQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
         PlayerData playerData = playerModule.getPlayerData(player);
-        storageModule.removePlayer(playerData);
+        storageModule.removePlayerData(playerData);
         if (playerData == null || !playerData.isModified()) {
             return;
         }

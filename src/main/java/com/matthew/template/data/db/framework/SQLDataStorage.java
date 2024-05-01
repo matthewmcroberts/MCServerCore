@@ -146,7 +146,7 @@ public abstract class SQLDataStorage implements DataStorage {
         }
 
         PlayerData newPlayer = serializer.deserializeObjectFromJsonString(json, PlayerData.class, PlayerSerializer.class);
-        storageModule.addPlayer(newPlayer);
+        storageModule.addPlayerData(newPlayer);
         Bukkit.getLogger().info(newPlayer.getName());
         return newPlayer;
     }

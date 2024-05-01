@@ -1,6 +1,5 @@
 package com.matthew.template.modules.player;
 
-import com.matthew.template.ServerCore;
 import com.matthew.template.api.ServerModule;
 import com.matthew.template.modules.manager.ServerModuleManager;
 import com.matthew.template.modules.player.listeners.PlayerDataListener;
@@ -19,28 +18,13 @@ public class PlayerModule implements ServerModule {
         this.plugin = plugin;
     }
 
-    /**
-     * Check if player has already been loaded into cache
-     *
-     * @param player bukkit player
-     * @return a boolean for if the specified player is already in the cache
-     */
+
     public boolean isLoaded(Player player) {
-        for(PlayerData playerData: storageModule.getAllPlayerData()) {
-            if(playerData.getName().equals(player.getName())) {
-                return true;
-            }
-        }
-        return false;
+        return storageModule.isLoaded(player);
     }
 
     public PlayerData getPlayerData(Player player) {
-        for(PlayerData playerData: storageModule.getAllPlayerData()) {
-            if(playerData.getName().equals(player.getName())) {
-                return playerData;
-            }
-        }
-        return null;
+        return storageModule.getPlayerData(player);
     }
 
     @Override
