@@ -19,7 +19,6 @@ public final class PlayerSerializer implements JsonSerializable<PlayerData> {
     }
 
     @Override
-
     public PlayerData deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
         JsonObject jsonObject = jsonElement.getAsJsonObject();
         String name = jsonObject.getAsJsonPrimitive("name").getAsString();

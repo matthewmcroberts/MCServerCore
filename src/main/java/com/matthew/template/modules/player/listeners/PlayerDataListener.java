@@ -42,22 +42,19 @@ public class PlayerDataListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
-
         this.dataStorage.load(player).whenComplete((loadedPlayer, ex) -> {
             if (ex != null) {
                 Bukkit.getLogger().severe("Failed to load player data: " + ex.getMessage());
                 return;
             }
-
             if (loadedPlayer == null) {
                 try {
                     Rank defaultRank = rankModule.getDefaultRank();
-                    PlayerData newPlayer = new PlayerData(player, rankModule.getDefaultRank(), 0L);
+                    PlayerData newPlayer = new PlayerData(player, defaultRank, 0L);
                     newPlayer.setModified(true);
                     storageModule.addPlayer(newPlayer);
                 } catch (NullPointerException ex2) {
-                    plugin.getLogger().severe(ex2.getMessage());
-                    //TODO: going to want to do something other than just not loading the new player if no default rank is found
+                    Bukkit.getLogger().severe(ex2.getMessage());
                 }
                 return;
             }
@@ -80,7 +77,7 @@ public class PlayerDataListener implements Listener {
         }
 
         this.dataStorage.save(playerData).exceptionally(ex -> {
-            Bukkit.getLogger().severe(ex.getMessage());
+            Bukkit.getLogger().info(ex.getMessage());
             return null;
         });
 
