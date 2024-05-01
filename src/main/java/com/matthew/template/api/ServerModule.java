@@ -1,12 +1,14 @@
 package com.matthew.template.api;
 
-import org.jetbrains.annotations.NotNull;
-
 public interface ServerModule {
 
-    @NotNull
+    /**
+     * Sets up the module. (Currently empty)
+     */
     void setUp();
 
-    @NotNull
+    /**
+     * Tears down any additional allocated resources
+     */
     void teardown();
 }

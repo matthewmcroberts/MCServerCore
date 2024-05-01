@@ -67,11 +67,7 @@ public class PlayerDataListener implements Listener {
     public void onQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
         PlayerData playerData = playerModule.getPlayerData(player);
-        Bukkit.getLogger().info(storageModule.getAllPlayerData().toString());
-
-        //TODO: implement removePlayer in the playerModule rather than grabbing copy of cache
-        storageModule.getAllPlayerData().remove(playerData);
-        Bukkit.getLogger().info(storageModule.getAllPlayerData().toString());
+        storageModule.removePlayer(playerData);
         if (playerData == null || !playerData.isModified()) {
             return;
         }
