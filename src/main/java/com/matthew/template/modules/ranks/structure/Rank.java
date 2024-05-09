@@ -1,6 +1,8 @@
 package com.matthew.template.modules.ranks.structure;
 
 import com.matthew.template.modules.manager.ServerModuleManager;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.beans.ConstructorProperties;
 import java.util.Collections;
@@ -110,7 +112,6 @@ public class Rank {
     public boolean hasAllProperties() {
         return this.name != null || this.color != null || this.chatColor != null || this.prefix != null || this.permissions != null;
     }
-
 
     @Override
     public String toString() {
