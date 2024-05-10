@@ -1,7 +1,9 @@
 package com.matthew.template.modules.storage;
 
 import com.matthew.template.api.ServerModule;
+import com.matthew.template.modules.manager.ServerModuleManager;
 import com.matthew.template.modules.player.structure.PlayerData;
+import com.matthew.template.modules.ranks.RankModule;
 import com.matthew.template.modules.ranks.structure.Rank;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -24,6 +26,8 @@ public final class DataStorageModule implements ServerModule {
      * The cache storing all necessary data related to the players and ranks
      */
     private final Cache cache;
+
+    private RankModule rankModule;
 
     /**
      * Constructs a new DataStorageModule with the given JavaPlugin instance.
@@ -125,6 +129,15 @@ public final class DataStorageModule implements ServerModule {
         return null;
     }
 
+    public PlayerData getPlayerData(String playerName) {
+        for(PlayerData playerData: cache.getPlayers()) {
+            if(playerData.getName().equals(playerName)) {
+                return playerData;
+            }
+        }
+        return null;
+    }
+
     /**
      * Retrieves all player data stored in the module.
      *
@@ -132,6 +145,14 @@ public final class DataStorageModule implements ServerModule {
      */
     public List<PlayerData> getAllPlayerData() {
         return Collections.unmodifiableList(cache.getPlayers());
+    }
+
+    public PlayerData createPlayerData(Player player) {
+        Rank defaultRank = rankModule.getDefaultRank();
+        PlayerData newPlayer = new PlayerData(player, defaultRank, 0L);
+        newPlayer.setModified(true);
+        addPlayerData(newPlayer);
+        return newPlayer;
     }
 
     /**
@@ -164,11 +185,11 @@ public final class DataStorageModule implements ServerModule {
     }
 
     /**
-     * Sets up the module. (Currently empty)
+     * Sets up the module.
      */
     @Override
     public void setUp() {
-
+        this.rankModule = ServerModuleManager.getInstance().getRegisteredModule(RankModule.class);
     }
 
     /**
