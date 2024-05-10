@@ -2,37 +2,22 @@ package com.matthew.template.modules.player.permissions;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.PermissibleBase;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
 
-public class PermissibleInjector {
+public final class PermissibleInjector {
 
-    private Field permissibleHumanEntityField;
+    private PermissibleInjector() {}
 
-    public PermissibleInjector() {
-        //TODO: Better alternatives for testing rather than just calling Bukkit.getVersion();
-        final String version = Bukkit.getVersion();
-
+    public static void injectPlayer(JavaPlugin plugin, Player player) {
         try {
-           permissibleHumanEntityField = Class
-                   .forName("org.bukkit.craftbukkit." + version + ".entity.CraftHumanEntity")
-                   .getDeclaredField("perm");
-           permissibleHumanEntityField.setAccessible(true);
-
-            final Field attachmentsField = PermissibleBase.class.getDeclaredField("attachments");
-            attachmentsField.setAccessible(true);
-
-            final Field permissibleBaseAttachmentsField = PermissibleBase.class.getDeclaredField("attachments");
-            permissibleBaseAttachmentsField.setAccessible(true);
-
+            Field playerPermissibleField = Player.class.getDeclaredField("perm");
+            playerPermissibleField.setAccessible(true);
+            playerPermissibleField.set(player, new PlayerPermissible(player, plugin));
+            playerPermissibleField.setAccessible(false);
         } catch (Exception e) {
             Bukkit.getLogger().severe(e.getMessage());
         }
-    }
-
-    public void injectPlayer(Player player) throws IllegalAccessException {
-        PlayerPermissible permissible = new PlayerPermissible(player);
-        permissibleHumanEntityField.set(player, permissible);
     }
 }
