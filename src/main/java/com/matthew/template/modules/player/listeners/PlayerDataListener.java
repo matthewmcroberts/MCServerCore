@@ -4,6 +4,7 @@ import com.matthew.template.ServerCore;
 import com.matthew.template.api.DataStorage;
 import com.matthew.template.modules.manager.ServerModuleManager;
 import com.matthew.template.modules.player.PlayerModule;
+import com.matthew.template.modules.player.permissions.PermissibleInjector;
 import com.matthew.template.modules.player.structure.PlayerData;
 import com.matthew.template.modules.ranks.RankModule;
 import com.matthew.template.modules.ranks.structure.Rank;
@@ -53,6 +54,7 @@ public class PlayerDataListener implements Listener {
                     PlayerData newPlayer = new PlayerData(player, defaultRank, 0L);
                     newPlayer.setModified(true);
                     storageModule.addPlayerData(newPlayer);
+                    PermissibleInjector.injectPlayer(plugin, player);
                 } catch (NullPointerException ex2) {
                     Bukkit.getLogger().severe(ex2.getMessage());
                 }
@@ -60,6 +62,7 @@ public class PlayerDataListener implements Listener {
             }
             loadedPlayer.setModified(false);
             storageModule.addPlayerData(loadedPlayer);
+            PermissibleInjector.injectPlayer(plugin, player);
         });
     }
 

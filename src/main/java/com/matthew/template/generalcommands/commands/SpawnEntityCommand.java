@@ -16,12 +16,18 @@ import java.util.List;
 public class SpawnEntityCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage("You must be a player to use this command!");
-            return true; //return true so that the sender does not see the usage assuming it is set in plugin.yml
+        Player player = (sender instanceof Player) ? (Player) sender : null;
+
+        if(player == null) {
+            Bukkit.getLogger().severe("You must be a player to use this command");
+            return true;
         }
 
-        Player player = (Player) sender;
+        if(!player.hasPermission("spawnentity.use")) {
+            player.sendMessage(ChatColor.RED + "Insufficient Permission");
+            return true;
+        }
+
         EntityType entityType;
 
         if (args.length < 2) {

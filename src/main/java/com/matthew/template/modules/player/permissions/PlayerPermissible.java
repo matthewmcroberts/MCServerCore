@@ -3,6 +3,7 @@ package com.matthew.template.modules.player.permissions;
 import com.matthew.template.modules.manager.ServerModuleManager;
 import com.matthew.template.modules.player.structure.PlayerData;
 import com.matthew.template.modules.ranks.RankModule;
+import com.matthew.template.modules.ranks.structure.Rank;
 import com.matthew.template.modules.storage.DataStorageModule;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissibleBase;
@@ -64,6 +65,13 @@ public class PlayerPermissible extends PermissibleBase {
 
     @Override
     public boolean hasPermission(@NotNull String inName) {
+        Rank rank = playerData.getRank();
+
+        for(String perm: rank.getPermissions()) {
+            if(perm.equalsIgnoreCase(inName)) {
+                return true;
+            }
+        }
         return super.hasPermission(inName);
     }
 
@@ -79,10 +87,7 @@ public class PlayerPermissible extends PermissibleBase {
 
     @Override
     public void removeAttachment(@NotNull PermissionAttachment attachment) {
-        try {
             super.removeAttachment(attachment);
-        } catch (Exception e) {
-        }
     }
 
     @Override
