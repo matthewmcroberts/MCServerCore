@@ -1,20 +1,21 @@
-<?xml version="1.0" ?>
-<!DOCTYPE xml>
+<?xml version="1.0"?>
+<!DOCTYPE project>
 <project name="ServerCore" default="Build">
+	<property name="outputDir" value="C:/Users/mm20c/Desktop/Minecourse 1.19.4/plugins" />
 
-	<!-- We use this file to compile your plugin to your plugins/ directory
-	     automatically and use the hot swap (also known as live debug) feature.
-		     
-	     It does not support dependencies easily -->
-		
-		<!-- Change the name="" key on the top to your plugin's name 
-		     and edit the path below to where your server is located.
-		     
-		     You can simply duplicate the <jar>...</jar> section
-		     to compile your plugin to multiple servers. -->
+	<target name="Build">
+		<!-- Include classes from the bukkit module -->
+		<jar jarfile="${outputDir}/${ant.project.name}.jar" basedir="./bukkit/target/classes" includes="**/*">
+		</jar>
 
-		<target name="Build">
-	    	<jar jarfile="C:/Users/mm20c/OneDrive/Desktop/Minecourse 1.19.4/plugins/${ant.project.name}.jar" basedir="./target/classes/" includes="**/*">
-	        </jar>
-		</target>
-</project> 
+		<!-- Include classes from the core module -->
+		<jar destfile="${outputDir}/${ant.project.name}.jar" update="true" >
+			<fileset dir="./core/target/classes" />
+		</jar>
+
+		<!-- Include classes from the api module -->
+		<jar destfile="${outputDir}/${ant.project.name}.jar" update="true" >
+			<fileset dir="./api/target/classes" />
+		</jar>
+	</target>
+</project>

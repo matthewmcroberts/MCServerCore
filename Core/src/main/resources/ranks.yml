@@ -1,0 +1,32 @@
+name: "OWNER"
+color: "&c"
+chatColor: "&e"
+prefix: "[OWNER]"
+isDefault: false
+isStaff: true
+permissions:
+  - "rank.use"
+  - "spawnentity.use"
+  - "cowexploder.use"
+
+---
+name: "ADMIN"
+color: "&c"
+chatColor: "&e"
+prefix: "[ADMIN]"
+isDefault: false
+isStaff: true
+permissions:
+  - "rank.use"
+  - "spawnentity.use"
+  - "cowexploder.use"
+
+---
+name: "MEMBER"
+color: "&7"
+chatColor: "&f"
+prefix: "[MEMBER]"
+isDefault: true
+isStaff: false
+permissions:
+    - ""

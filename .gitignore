@@ -3,14 +3,15 @@
 #################
 
 # User-specific stuff
-.idea/
+../.idea/
 .idea_modules/
 *.iml
 
 # IntelliJ
 out/
 
-target/
+Core/target/
+Bukkit/target/
 
 #################
 ## Eclipse
