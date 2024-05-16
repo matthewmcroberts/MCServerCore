@@ -12,6 +12,7 @@ out/
 
 Core/target/
 Bukkit/target/
+Api/target/
 
 #################
 ## Eclipse
