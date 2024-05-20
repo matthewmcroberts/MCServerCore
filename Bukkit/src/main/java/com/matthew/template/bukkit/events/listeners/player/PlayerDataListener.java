@@ -4,7 +4,7 @@ import com.matthew.template.bukkit.ServerCore;
 import com.matthew.template.common.apis.DataStorage;
 import com.matthew.template.common.modules.manager.ServerModuleManager;
 import com.matthew.template.common.modules.player.PlayerModule;
-import com.matthew.template.common.modules.player.permissions.PermissibleInjector;
+import com.matthew.template.bukkit.permissions.PermissibleInjector;
 import com.matthew.template.common.modules.player.structure.PlayerData;
 import com.matthew.template.common.modules.ranks.RankModule;
 import com.matthew.template.common.modules.ranks.structure.Rank;

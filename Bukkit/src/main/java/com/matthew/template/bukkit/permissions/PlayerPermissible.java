@@ -1,4 +1,4 @@
-package com.matthew.template.common.modules.player.permissions;
+package com.matthew.template.bukkit.permissions;
 
 import com.matthew.template.common.modules.player.structure.PlayerData;
 import com.matthew.template.common.modules.ranks.RankModule;
