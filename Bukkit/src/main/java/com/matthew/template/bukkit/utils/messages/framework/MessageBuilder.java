@@ -1,4 +1,4 @@
-package com.matthew.template.common.util.messages.framework;
+package com.matthew.template.bukkit.utils.messages.framework;
 
 public abstract class MessageBuilder {
 

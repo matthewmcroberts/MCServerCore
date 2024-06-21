@@ -1,6 +1,6 @@
-package com.matthew.template.common.util.messages;
+package com.matthew.template.bukkit.utils.messages;
 
-import com.matthew.template.common.util.messages.framework.MessageBuilder;
+import com.matthew.template.bukkit.utils.messages.framework.MessageBuilder;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
