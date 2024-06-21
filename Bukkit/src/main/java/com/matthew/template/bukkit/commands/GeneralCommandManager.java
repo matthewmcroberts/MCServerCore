@@ -1,6 +1,5 @@
 package com.matthew.template.bukkit.commands;
 
-import com.matthew.template.bukkit.commands.commands.FireCommand;
 import com.matthew.template.bukkit.commands.commands.SpawnEntityCommand;
 import com.matthew.template.common.apis.GeneralManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -19,7 +18,6 @@ public final class GeneralCommandManager implements GeneralManager {
     @Override
     public void register() {
         Objects.requireNonNull(plugin.getCommand("spawnentity")).setExecutor(new SpawnEntityCommand());
-        Objects.requireNonNull(plugin.getCommand("fire")).setExecutor(new FireCommand(plugin));
     }
 
     @Override

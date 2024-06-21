@@ -1,4 +1,4 @@
-package com.matthew.template.bukkit.events.listeners.player;
+package com.matthew.template.bukkit.events.listeners;
 
 import com.matthew.template.bukkit.ServerCore;
 import com.matthew.template.common.apis.DataStorage;
@@ -56,14 +56,14 @@ public class PlayerDataListener implements Listener {
                     PlayerData newPlayer = new PlayerData(player, defaultRank, 0L);
                     newPlayer.setModified(true);
                     storageModule.addPlayerData(newPlayer);
-                    PermissibleInjector.injectPlayer(plugin, player);
                 } catch (NullPointerException ex2) {
                     Bukkit.getLogger().severe(ex2.getMessage());
                 }
-                return;
+            } else {
+                loadedPlayer.setModified(false);
+                storageModule.addPlayerData(loadedPlayer);
             }
-            loadedPlayer.setModified(false);
-            storageModule.addPlayerData(loadedPlayer);
+
             PermissibleInjector.injectPlayer(plugin, player);
         });
     }

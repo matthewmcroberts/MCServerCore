@@ -6,7 +6,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**
- * This class serves as a quick access template and reminder for creating custom events
+ * This class serves as a temp quick access template and reminder for creating custom events
  */
 public class CowExplodeEvent extends Event implements Cancellable {
 
