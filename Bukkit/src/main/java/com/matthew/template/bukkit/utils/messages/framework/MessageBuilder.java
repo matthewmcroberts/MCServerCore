@@ -8,6 +8,7 @@ public abstract class MessageBuilder {
 
     public MessageBuilder() {
         message = new StringBuilder();
+        message.append(MESSAGE_PREFIX);
     }
 
     public abstract String build();
