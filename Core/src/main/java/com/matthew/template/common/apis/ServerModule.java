@@ -3,7 +3,7 @@ package com.matthew.template.common.apis;
 public interface ServerModule {
 
     /**
-     * Sets up the module. (Currently empty)
+     * Sets up the module.
      */
     void setUp();
 
