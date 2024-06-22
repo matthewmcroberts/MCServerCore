@@ -1,4 +1,4 @@
-package com.matthew.template.bukkit.commands.commands;
+package com.matthew.template.bukkit.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

@@ -1,11 +1,10 @@
 package com.matthew.template.bukkit;
 
-import com.matthew.template.bukkit.modules.CommandModule;
+import com.matthew.template.bukkit.modules.commands.CommandModule;
 import com.matthew.template.common.apis.DataStorage;
 import com.matthew.template.common.data.config.RankConfigManager;
 import com.matthew.template.common.data.db.MySQLDataStorage;
 import com.matthew.template.common.data.db.config.MySQLConfig;
-import com.matthew.template.bukkit.commands.GeneralCommandManager;
 import com.matthew.template.bukkit.events.GeneralEventsManager;
 import com.matthew.template.common.modules.manager.ServerModuleManager;
 import com.matthew.template.common.modules.player.PlayerModule;
@@ -27,8 +26,6 @@ public final class ServerCore extends JavaPlugin {
     private ServerModuleManager moduleManager;
 
     private GeneralEventsManager mechanicManager;
-
-    private GeneralCommandManager commandManager;
 
     private RankConfigManager rankConfig;
 
@@ -73,11 +70,6 @@ public final class ServerCore extends JavaPlugin {
         mechanicManager = new GeneralEventsManager(this);
         mechanicManager.register();
 
-        //General Commands Setup
-        Bukkit.getLogger().info("Registering commands...");
-        commandManager = new GeneralCommandManager(this);
-        commandManager.register();
-
         Bukkit.getLogger().info("ServerCore successfully enabled!");
     }
 
@@ -87,7 +79,6 @@ public final class ServerCore extends JavaPlugin {
 
         moduleManager.teardown();
         mechanicManager.unregister();
-        commandManager.unregister();
     }
 
     public DataStorage getDataStorage() {
