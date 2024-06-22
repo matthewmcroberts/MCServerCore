@@ -1,5 +1,6 @@
 package com.matthew.template.bukkit;
 
+import com.matthew.template.bukkit.modules.CommandModule;
 import com.matthew.template.common.apis.DataStorage;
 import com.matthew.template.common.data.config.RankConfigManager;
 import com.matthew.template.common.data.db.MySQLDataStorage;
@@ -41,7 +42,8 @@ public final class ServerCore extends JavaPlugin {
         moduleManager = ServerModuleManager.getInstance();
         moduleManager.registerModule(new DataStorageModule(this))
                 .registerModule(new RankModule(this))
-                .registerModule(new PlayerModule(this));
+                .registerModule(new PlayerModule(this))
+                .registerModule(new CommandModule(this));
 
         //Load Ranks into cache
         Bukkit.getLogger().info("Attempting to load ranks from ranks.yml into cache...");

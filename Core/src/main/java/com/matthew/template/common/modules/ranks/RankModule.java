@@ -4,17 +4,14 @@ import com.matthew.template.common.apis.ServerModule;
 import com.matthew.template.common.modules.player.PlayerModule;
 import com.matthew.template.common.modules.player.structure.PlayerData;
 import com.matthew.template.common.modules.manager.ServerModuleManager;
-import com.matthew.template.common.modules.ranks.command.RankCommand;
 import com.matthew.template.common.modules.ranks.structure.Rank;
 import com.matthew.template.common.modules.storage.DataStorageModule;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 public class RankModule implements ServerModule {
@@ -65,8 +62,6 @@ public class RankModule implements ServerModule {
     public void setUp() {
         this.storageModule = ServerModuleManager.getInstance().getRegisteredModule(DataStorageModule.class);
         this.playerModule = ServerModuleManager.getInstance().getRegisteredModule(PlayerModule.class);
-        CommandExecutor rankCommand = new RankCommand(plugin);
-        Objects.requireNonNull(plugin.getCommand("rank")).setExecutor(rankCommand);
     }
 
     @Override

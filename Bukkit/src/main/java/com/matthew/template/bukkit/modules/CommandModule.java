@@ -4,6 +4,7 @@ import com.matthew.template.bukkit.commands.commands.RankCommand;
 import com.matthew.template.bukkit.utils.CommandUtil;
 import com.matthew.template.common.apis.ServerModule;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ public class CommandModule implements ServerModule {
 
     private final JavaPlugin plugin;
 
-    private List<Command> commands;
+    private List<CommandExecutor> commands;
 
     public CommandModule(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -25,7 +26,7 @@ public class CommandModule implements ServerModule {
 
         buildCommands();
 
-        for(Command command: commands) {
+        for(CommandExecutor command: commands) {
             CommandUtil.register(command);
         }
     }

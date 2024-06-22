@@ -3,22 +3,21 @@ package com.matthew.template.bukkit.commands.commands;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RankCommand extends Command {
-
-    private static final String COMMAND_NAME = "rank";
+public class RankCommand implements TabExecutor {
 
     public RankCommand() {
-        super(COMMAND_NAME);
     }
 
     @Override
-    public boolean execute(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         Player player = sender instanceof Player ? (Player) sender : null;
 
         if (player == null) {
@@ -26,12 +25,13 @@ public class RankCommand extends Command {
             return true;
         }
 
-        
+        player.sendMessage("Fired");
         return true;
     }
 
+    @Nullable
     @Override
-    public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         return new ArrayList<>();
     }
 }

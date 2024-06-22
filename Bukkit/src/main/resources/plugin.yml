@@ -9,6 +9,4 @@ api-version: 1.13
 commands:
   spawnentity:
     aliases: [spawnmob, spawne]
-  perm:
-  fire:
   rank:
