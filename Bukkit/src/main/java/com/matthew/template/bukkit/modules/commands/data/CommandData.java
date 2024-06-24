@@ -23,4 +23,9 @@ public class CommandData {
     public CommandExecutor getCommandExecutor() {
         return command;
     }
+
+    @Override
+    public String toString() {
+        return "CommandData [commandName=" + commandName + ", command=" + command + "]";
+    }
 }

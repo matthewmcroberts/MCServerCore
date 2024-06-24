@@ -1,6 +1,6 @@
 package com.matthew.template.bukkit.commands;
 
-import com.matthew.template.bukkit.annotations.CommandInfo;
+import com.matthew.template.bukkit.annotations.RegisterCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-@CommandInfo(name = "rank")
+@RegisterCommand(name = "rank")
 public class RankCommand implements TabExecutor {
 
     public RankCommand() {

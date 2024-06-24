@@ -5,6 +5,7 @@ import com.matthew.template.bukkit.modules.commands.data.CommandData;
 import com.matthew.template.bukkit.modules.commands.factory.CommandFactory;
 import com.matthew.template.bukkit.utils.CommandUtil;
 import com.matthew.template.common.apis.ServerModule;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -28,7 +29,10 @@ public class CommandModule implements ServerModule {
     public void setUp() {
         List<CommandData> commandDataList = commandFactory.createCommands();
 
+        Bukkit.getLogger().info(commandDataList.toString());
+
         for (CommandData commandData : commandDataList) {
+            Bukkit.getLogger().info(commandData.toString());
             CommandUtil.register(commandData.getCommandName(), commandData.getCommandExecutor());
         }
     }

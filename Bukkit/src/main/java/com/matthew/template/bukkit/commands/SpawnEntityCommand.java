@@ -1,5 +1,6 @@
 package com.matthew.template.bukkit.commands;
 
+import com.matthew.template.bukkit.annotations.RegisterCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -10,6 +11,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+@RegisterCommand(name = "spawnentity")
 public class SpawnEntityCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
