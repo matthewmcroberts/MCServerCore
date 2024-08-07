@@ -18,7 +18,7 @@ public final class PlayerData {
 
     private String name;
     private UUID uuid;
-    @NonNull private RankData rankData;
+    private RankData rankData;
     private String chatColor;
     private boolean isStaff;
     private long playTime;
