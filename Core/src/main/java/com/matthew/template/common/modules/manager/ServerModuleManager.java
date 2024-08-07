@@ -1,10 +1,12 @@
 package com.matthew.template.common.modules.manager;
 
 import com.matthew.template.common.apis.ServerModule;
+import lombok.Getter;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
 public final class ServerModuleManager implements ServerModule {
 
     private static ServerModuleManager instance;
@@ -32,10 +34,6 @@ public final class ServerModuleManager implements ServerModule {
             }
         }
         return null;
-    }
-
-    public Set<ServerModule> getRegisteredModules() {
-        return this.registeredModules;
     }
 
     @Override
