@@ -5,9 +5,9 @@ import com.matthew.template.common.apis.DataStorage;
 import com.matthew.template.common.modules.manager.ServerModuleManager;
 import com.matthew.template.common.modules.player.PlayerModule;
 import com.matthew.template.bukkit.permissions.PermissibleInjector;
-import com.matthew.template.common.modules.player.structure.PlayerData;
+import com.matthew.template.common.modules.player.dto.PlayerDTO;
 import com.matthew.template.common.modules.ranks.RankModule;
-import com.matthew.template.common.modules.ranks.structure.Rank;
+import com.matthew.template.common.modules.ranks.dto.RankDTO;
 import com.matthew.template.common.modules.storage.DataStorageModule;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -52,8 +52,8 @@ public class PlayerDataListener implements Listener {
             }
             if (loadedPlayer == null) {
                 try {
-                    Rank defaultRank = rankModule.getDefaultRank();
-                    PlayerData newPlayer = new PlayerData(player, defaultRank, 0L);
+                    RankDTO defaultRankDTO = rankModule.getDefaultRank();
+                    PlayerDTO newPlayer = new PlayerDTO(player, defaultRankDTO, 0L);
                     newPlayer.setModified(true);
                     storageModule.addPlayerData(newPlayer);
                 } catch (NullPointerException ex2) {
@@ -71,13 +71,13 @@ public class PlayerDataListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
-        PlayerData playerData = playerModule.getPlayerData(player);
-        storageModule.removePlayerData(playerData);
-        if (playerData == null || !playerData.isModified()) {
+        PlayerDTO playerDto = playerModule.getPlayerData(player);
+        storageModule.removePlayerData(playerDto);
+        if (playerDto == null || !playerDto.isModified()) {
             return;
         }
 
-        this.dataStorage.save(playerData).exceptionally(ex -> {
+        this.dataStorage.save(playerDto).exceptionally(ex -> {
             Bukkit.getLogger().info(ex.getMessage());
             return null;
         });

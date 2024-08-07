@@ -1,8 +1,8 @@
 package com.matthew.template.bukkit.permissions;
 
-import com.matthew.template.common.modules.player.structure.PlayerData;
+import com.matthew.template.common.modules.player.dto.PlayerDTO;
 import com.matthew.template.common.modules.ranks.RankModule;
-import com.matthew.template.common.modules.ranks.structure.Rank;
+import com.matthew.template.common.modules.ranks.dto.RankDTO;
 import com.matthew.template.common.modules.manager.ServerModuleManager;
 import com.matthew.template.common.modules.storage.DataStorageModule;
 import org.bukkit.entity.Player;
@@ -24,17 +24,17 @@ public class PlayerPermissible extends PermissibleBase {
 
     private DataStorageModule storageModule;
 
-    private PlayerData playerData;
+    private PlayerDTO playerDto;
 
     public PlayerPermissible(Player player, JavaPlugin plugin) {
         super(player);
         this.plugin = plugin;
         this.rankModule = ServerModuleManager.getInstance().getRegisteredModule(RankModule.class);
         this.storageModule = ServerModuleManager.getInstance().getRegisteredModule(DataStorageModule.class);
-        this.playerData = Objects.requireNonNull(storageModule).getPlayerData(player);
-        if (playerData == null) { //Only way playerData would be null is if the server was reloaded (Which shouldn't be done)
-            PlayerData newPlayerData = storageModule.createPlayerData(player);
-            this.playerData = storageModule.getPlayerData(newPlayerData.getName());
+        this.playerDto = Objects.requireNonNull(storageModule).getPlayerData(player);
+        if (playerDto == null) { //Only way playerData would be null is if the server was reloaded (Which shouldn't be done)
+            PlayerDTO newPlayerDTO = storageModule.createPlayerData(player);
+            this.playerDto = storageModule.getPlayerData(newPlayerDTO.getName());
         }
     }
 
@@ -65,9 +65,9 @@ public class PlayerPermissible extends PermissibleBase {
 
     @Override
     public boolean hasPermission(@NotNull String inName) {
-        Rank rank = playerData.getRank();
+        RankDTO rankDTO = playerDto.getRankDTO();
 
-        for(String perm: rank.getPermissions()) {
+        for(String perm: rankDTO.getPermissions()) {
             if(perm.equalsIgnoreCase(inName)) {
                 return true;
             }

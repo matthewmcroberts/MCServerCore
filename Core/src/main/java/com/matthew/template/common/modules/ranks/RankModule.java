@@ -2,9 +2,9 @@ package com.matthew.template.common.modules.ranks;
 
 import com.matthew.template.common.apis.ServerModule;
 import com.matthew.template.common.modules.player.PlayerModule;
-import com.matthew.template.common.modules.player.structure.PlayerData;
+import com.matthew.template.common.modules.player.dto.PlayerDTO;
 import com.matthew.template.common.modules.manager.ServerModuleManager;
-import com.matthew.template.common.modules.ranks.structure.Rank;
+import com.matthew.template.common.modules.ranks.dto.RankDTO;
 import com.matthew.template.common.modules.storage.DataStorageModule;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -26,33 +26,33 @@ public class RankModule implements ServerModule {
         this.plugin = plugin;
     }
 
-    public Set<Rank> getRanks() {
+    public Set<RankDTO> getRanks() {
         return storageModule.getAllRanks();
     }
 
-    public List<PlayerData> getWhoOnline(String rank) {
-        List<PlayerData> players = new ArrayList<>();
+    public List<PlayerDTO> getWhoOnline(String rank) {
+        List<PlayerDTO> players = new ArrayList<>();
         for(Player player: Bukkit.getOnlinePlayers()) {
-            PlayerData playerData = playerModule.getPlayerData(player);
-            if(playerData != null && playerData.getRank().getName().equalsIgnoreCase(rank)) {
-                players.add(playerData);
+            PlayerDTO playerDto = playerModule.getPlayerData(player);
+            if(playerDto != null && playerDto.getRankDTO().getName().equalsIgnoreCase(rank)) {
+                players.add(playerDto);
             }
         }
         return players;
     }
 
-    public Rank getRank(Player player) {
+    public RankDTO getRank(Player player) {
         return storageModule.getRank(player);
     }
 
-    public Rank getRank(String name) {
+    public RankDTO getRank(String name) {
         return storageModule.getRank(name);
     }
 
-    public Rank getDefaultRank() {
-        for (Rank rank : getRanks()) {
-            if (rank.isDefault()) {
-                return rank;
+    public RankDTO getDefaultRank() {
+        for (RankDTO rankDTO : getRanks()) {
+            if (rankDTO.isDefault()) {
+                return rankDTO;
             }
         }
         throw new NullPointerException("Default rank cannot be null in ranks.yml");

@@ -1,7 +1,7 @@
 package com.matthew.template.common.data.config;
 
 import com.matthew.template.common.data.config.framework.ConfigManager;
-import com.matthew.template.common.modules.ranks.structure.Rank;
+import com.matthew.template.common.modules.ranks.dto.RankDTO;
 import com.matthew.template.common.serializer.Serializer;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -41,39 +41,39 @@ public class RankConfigManager extends ConfigManager {
             Files.write(rankFile.toPath(), getDefaultYamlString().getBytes(), StandardOpenOption.CREATE);
         }
 
-        List<Rank> ranks = serializer.deserializeFromYamlFile(this.rankFile, Rank.class);
+        List<RankDTO> rankDTOS = serializer.deserializeFromYamlFile(this.rankFile, RankDTO.class);
 
-        for (Rank rank : ranks) {
-            if (!rank.hasAllProperties()) {
-                Bukkit.getLogger().severe("Failed to load " + rank.getName() + " rank. Missing property/properties in ranks.yml");
+        for (RankDTO rankDTO : rankDTOS) {
+            if (!rankDTO.hasAllProperties()) {
+                Bukkit.getLogger().severe("Failed to load " + rankDTO.getName() + " rank. Missing property/properties in ranks.yml");
                 continue; //do not load rank
             }
 
-            module.addRank(rank);
+            module.addRank(rankDTO);
         }
     }
 
     private String getDefaultYamlString() {
-        List<Rank> defaultRanks = new ArrayList<>();
+        List<RankDTO> defaultRankDTOS = new ArrayList<>();
 
-        defaultRanks.add(new Rank("OWNER", "&c", "&e", "[OWNER]", false, true, Collections.singletonList("rank.use")));
-        defaultRanks.add(new Rank("ADMIN", "&c", "&e", "[ADMIN]", false, true, Collections.singletonList("rank.use")));
-        defaultRanks.add(new Rank("MEMBER", "&7", "&f", "[MEMBER]", true, false, Collections.singletonList("")));
+        defaultRankDTOS.add(new RankDTO("OWNER", "&c", "&e", "[OWNER]", false, true, Collections.singletonList("rank.use")));
+        defaultRankDTOS.add(new RankDTO("ADMIN", "&c", "&e", "[ADMIN]", false, true, Collections.singletonList("rank.use")));
+        defaultRankDTOS.add(new RankDTO("MEMBER", "&7", "&f", "[MEMBER]", true, false, Collections.emptyList()));
 
         StringBuilder yamlBuilder = new StringBuilder();
-        for (int i = 0; i < defaultRanks.size(); i++) {
-            Rank rank = defaultRanks.get(i);
-            yamlBuilder.append("name: \"").append(rank.getName()).append("\"\n");
-            yamlBuilder.append("color: \"").append(rank.getColor()).append("\"\n");
-            yamlBuilder.append("chatColor: \"").append(rank.getChatColor()).append("\"\n");
-            yamlBuilder.append("prefix: \"").append(rank.getPrefix()).append("\"\n");
-            yamlBuilder.append("isDefault: ").append(rank.isDefault()).append("\n");
-            yamlBuilder.append("isStaff: ").append(rank.isStaff()).append("\n");
+        for (int i = 0; i < defaultRankDTOS.size(); i++) {
+            RankDTO rankDTO = defaultRankDTOS.get(i);
+            yamlBuilder.append("name: \"").append(rankDTO.getName()).append("\"\n");
+            yamlBuilder.append("color: \"").append(rankDTO.getColor()).append("\"\n");
+            yamlBuilder.append("chatColor: \"").append(rankDTO.getChatColor()).append("\"\n");
+            yamlBuilder.append("prefix: \"").append(rankDTO.getPrefix()).append("\"\n");
+            yamlBuilder.append("isDefault: ").append(rankDTO.isDefault()).append("\n");
+            yamlBuilder.append("isStaff: ").append(rankDTO.isStaff()).append("\n");
             yamlBuilder.append("permissions:\n");
-            for (String permission : rank.getPermissions()) {
+            for (String permission : rankDTO.getPermissions()) {
                 yamlBuilder.append("  - \"").append(permission).append("\"\n");
             }
-            if (i < defaultRanks.size() - 1) {
+            if (i < defaultRankDTOS.size() - 1) {
                 yamlBuilder.append("\n---\n");
             }
         }

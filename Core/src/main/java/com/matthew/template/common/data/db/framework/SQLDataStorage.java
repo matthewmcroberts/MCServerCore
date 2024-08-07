@@ -3,7 +3,7 @@ package com.matthew.template.common.data.db.framework;
 import com.matthew.template.common.apis.DataStorage;
 import com.matthew.template.common.modules.manager.ServerModuleManager;
 import com.matthew.template.common.modules.player.PlayerModule;
-import com.matthew.template.common.modules.player.structure.PlayerData;
+import com.matthew.template.common.modules.player.dto.PlayerDTO;
 import com.matthew.template.common.modules.storage.DataStorageModule;
 import com.matthew.template.common.serializer.adapters.PlayerSerializer;
 import com.matthew.template.common.serializer.Serializer;
@@ -53,7 +53,7 @@ public abstract class SQLDataStorage implements DataStorage {
 
     @NotNull
     @Override
-    public CompletableFuture<PlayerData> load(Player player) {
+    public CompletableFuture<PlayerDTO> load(Player player) {
         if (playerModule.isLoaded(player)) { //player for some reason is already loaded in the cache
             return CompletableFuture.completedFuture(playerModule.getPlayerData(player));
         }
@@ -78,7 +78,7 @@ public abstract class SQLDataStorage implements DataStorage {
 
     @NotNull
     @Override
-    public CompletableFuture<List<PlayerData>> load() {
+    public CompletableFuture<List<PlayerDTO>> load() {
         return CompletableFuture.supplyAsync(() -> {
             try (Connection connection = openConnection()) {
                 PreparedStatement statement = connection.prepareStatement(getSelectAllPlayerDataQuery());
@@ -97,15 +97,15 @@ public abstract class SQLDataStorage implements DataStorage {
 
     @NotNull
     @Override
-    public CompletableFuture<PlayerData> save(@NotNull PlayerData player) {
+    public CompletableFuture<PlayerDTO> save(@NotNull PlayerDTO player) {
         if (!player.isModified()) {
             return CompletableFuture.completedFuture(player);
         }
         return CompletableFuture.supplyAsync(() -> {
             try (Connection connection = openConnection()) {
                 PreparedStatement statement = connection.prepareStatement(getInsertPlayerDataStatement());
-                String jsonData = serializer.serializeObjectToJsonString(player, PlayerData.class, PlayerSerializer.class);
-                statement.setString(1, player.getUniqueId().toString());
+                String jsonData = serializer.serializeObjectToJsonString(player, PlayerDTO.class, PlayerSerializer.class);
+                statement.setString(1, player.getUuid().toString());
                 statement.setString(2, jsonData);
                 statement.execute();
                 return player;
@@ -117,7 +117,7 @@ public abstract class SQLDataStorage implements DataStorage {
 
     @NotNull
     @Override
-    public CompletableFuture<List<PlayerData>> save(@NotNull Collection<? extends PlayerData> players) {
+    public CompletableFuture<List<PlayerDTO>> save(@NotNull Collection<? extends PlayerDTO> players) {
         return null;
 
     }
@@ -139,19 +139,19 @@ public abstract class SQLDataStorage implements DataStorage {
     protected abstract String getSelectPlayerDataQuery();
 
 
-    private PlayerData handleResult(ResultSet results) throws SQLException {
+    private PlayerDTO handleResult(ResultSet results) throws SQLException {
         String json = results.getString("data");
         if (json == null) {
             return null;
         }
 
-        PlayerData newPlayer = serializer.deserializeObjectFromJsonString(json, PlayerData.class, PlayerSerializer.class);
+        PlayerDTO newPlayer = serializer.deserializeObjectFromJsonString(json, PlayerDTO.class, PlayerSerializer.class);
         storageModule.addPlayerData(newPlayer);
         Bukkit.getLogger().info(newPlayer.getName());
         return newPlayer;
     }
 
-    private List<PlayerData> handleResults(ResultSet results) {
+    private List<PlayerDTO> handleResults(ResultSet results) {
         return null;
     }
 

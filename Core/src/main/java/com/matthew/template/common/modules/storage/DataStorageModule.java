@@ -1,9 +1,9 @@
 package com.matthew.template.common.modules.storage;
 
 import com.matthew.template.common.apis.ServerModule;
-import com.matthew.template.common.modules.player.structure.PlayerData;
+import com.matthew.template.common.modules.player.dto.PlayerDTO;
 import com.matthew.template.common.modules.ranks.RankModule;
-import com.matthew.template.common.modules.ranks.structure.Rank;
+import com.matthew.template.common.modules.ranks.dto.RankDTO;
 import com.matthew.template.common.modules.manager.ServerModuleManager;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -42,43 +42,43 @@ public final class DataStorageModule implements ServerModule {
     /**
      * Adds a new rank to cache.
      *
-     * @param rank The Rank object to add.
+     * @param rankDTO The Rank object to add.
      * @return True if the rank was successfully added, false otherwise.
      */
-    public boolean addRank(Rank rank) {
-        if ((containsRank(rank))) {
+    public boolean addRank(RankDTO rankDTO) {
+        if ((containsRank(rankDTO))) {
             return false;
         }
-        cache.getRanks().add(rank);
+        cache.getRanks().add(rankDTO);
         return true;
     }
 
     /**
      * Removes a rank from cache.
      *
-     * @param rank The Rank object to remove.
+     * @param rankDTO The Rank object to remove.
      * @return True if the rank was successfully removed, false otherwise.
      */
-    public boolean removeRank(Rank rank) {
-        if (!(containsRank(rank))) {
+    public boolean removeRank(RankDTO rankDTO) {
+        if (!(containsRank(rankDTO))) {
             return false;
         }
-        cache.getRanks().remove(rank);
+        cache.getRanks().remove(rankDTO);
         return true;
     }
 
-    public Rank getRank(String rankName) {
-        for(Rank rank: cache.getRanks()) {
-            if(rank.getName().equalsIgnoreCase(rankName)) {
-                return rank;
+    public RankDTO getRank(String rankName) {
+        for(RankDTO rankDTO : cache.getRanks()) {
+            if(rankDTO.getName().equalsIgnoreCase(rankName)) {
+                return rankDTO;
             }
         }
         return null;
     }
 
-    public Rank getRank(Player player) {
+    public RankDTO getRank(Player player) {
         if(isLoaded(player)) {
-            return Objects.requireNonNull(getPlayerData(player)).getRank();
+            return Objects.requireNonNull(getPlayerData(player)).getRankDTO();
         }
         return null;
     }
@@ -88,7 +88,7 @@ public final class DataStorageModule implements ServerModule {
      *
      * @return An unmodifiable set of all ranks.
      */
-    public Set<Rank> getAllRanks() {
+    public Set<RankDTO> getAllRanks() {
         return Collections.unmodifiableSet(cache.getRanks());
     }
 
@@ -98,7 +98,7 @@ public final class DataStorageModule implements ServerModule {
      * @param player The PlayerData object to add.
      * @return True if the player's data was successfully added, false otherwise.
      */
-    public boolean addPlayerData(PlayerData player) {
+    public boolean addPlayerData(PlayerDTO player) {
         if ((containsPlayer(player))) {
             return false;
         }
@@ -112,7 +112,7 @@ public final class DataStorageModule implements ServerModule {
      * @param player The PlayerData object to remove.
      * @return True if the player's data was successfully removed, false otherwise.
      */
-    public boolean removePlayerData(PlayerData player) {
+    public boolean removePlayerData(PlayerDTO player) {
         if(!(containsPlayer(player))) {
             return false;
         }
@@ -120,19 +120,19 @@ public final class DataStorageModule implements ServerModule {
         return true;
     }
 
-    public PlayerData getPlayerData(Player player) {
-        for(PlayerData playerData: cache.getPlayers()) {
-            if(playerData.getName().equals(player.getName())) {
-                return playerData;
+    public PlayerDTO getPlayerData(Player player) {
+        for(PlayerDTO playerDto : cache.getPlayers()) {
+            if(playerDto.getName().equals(player.getName())) {
+                return playerDto;
             }
         }
         return null;
     }
 
-    public PlayerData getPlayerData(String playerName) {
-        for(PlayerData playerData: cache.getPlayers()) {
-            if(playerData.getName().equals(playerName)) {
-                return playerData;
+    public PlayerDTO getPlayerData(String playerName) {
+        for(PlayerDTO playerDto : cache.getPlayers()) {
+            if(playerDto.getName().equals(playerName)) {
+                return playerDto;
             }
         }
         return null;
@@ -143,13 +143,13 @@ public final class DataStorageModule implements ServerModule {
      *
      * @return An unmodifiable list of all player data.
      */
-    public List<PlayerData> getAllPlayerData() {
+    public List<PlayerDTO> getAllPlayerData() {
         return Collections.unmodifiableList(cache.getPlayers());
     }
 
-    public PlayerData createPlayerData(Player player) {
-        Rank defaultRank = rankModule.getDefaultRank();
-        PlayerData newPlayer = new PlayerData(player, defaultRank, 0L);
+    public PlayerDTO createPlayerData(Player player) {
+        RankDTO defaultRankDTO = rankModule.getDefaultRank();
+        PlayerDTO newPlayer = new PlayerDTO(player, defaultRankDTO, 0L);
         newPlayer.setModified(true);
         addPlayerData(newPlayer);
         return newPlayer;
@@ -158,26 +158,26 @@ public final class DataStorageModule implements ServerModule {
     /**
      * Checks if a rank is contained in cache.
      *
-     * @param rank The Rank object to check.
+     * @param rankDTO The Rank object to check.
      * @return True if the rank is contained, false otherwise.
      */
-    public boolean containsRank(Rank rank) {
-        return cache.getRanks().contains(rank);
+    public boolean containsRank(RankDTO rankDTO) {
+        return cache.getRanks().contains(rankDTO);
     }
 
     /**
      * Checks if a player's data is contained in cache.
      *
-     * @param playerData The PlayerData object to check.
+     * @param playerDto The PlayerData object to check.
      * @return True if the player's data is contained, false otherwise.
      */
-    public boolean containsPlayer(PlayerData playerData) {
-        return cache.getPlayers().contains(playerData);
+    public boolean containsPlayer(PlayerDTO playerDto) {
+        return cache.getPlayers().contains(playerDto);
     }
 
     public boolean isLoaded(Player player) {
-        for(PlayerData playerData: cache.getPlayers()) {
-            if(playerData.getName().equals(player.getName())) {
+        for(PlayerDTO playerDto : cache.getPlayers()) {
+            if(playerDto.getName().equals(player.getName())) {
                 return true;
             }
         }
@@ -205,14 +205,14 @@ public final class DataStorageModule implements ServerModule {
      * coupling between the Cache and DataStorageModule
      */
     private static class Cache {
-        private final Set<Rank> ranks;
-        private final List<PlayerData> players;
+        private final Set<RankDTO> rankDTOS;
+        private final List<PlayerDTO> players;
 
         /**
          * Constructs a new Cache with an empty set and list.
          */
         public Cache() {
-            this.ranks = new HashSet<>();
+            this.rankDTOS = new HashSet<>();
             this.players = new ArrayList<>();
         }
 
@@ -221,8 +221,8 @@ public final class DataStorageModule implements ServerModule {
          *
          * @return The set of ranks.
          */
-        public Set<Rank> getRanks() {
-            return ranks;
+        public Set<RankDTO> getRanks() {
+            return rankDTOS;
         }
 
         /**
@@ -230,7 +230,7 @@ public final class DataStorageModule implements ServerModule {
          *
          * @return The list of player data.
          */
-        public List<PlayerData> getPlayers() {
+        public List<PlayerDTO> getPlayers() {
             return players;
         }
 
@@ -238,7 +238,7 @@ public final class DataStorageModule implements ServerModule {
          * Clears all stored data.
          */
         public void clear() {
-            ranks.clear();
+            rankDTOS.clear();
             players.clear();
         }
     }
