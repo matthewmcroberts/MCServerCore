@@ -1,6 +1,6 @@
 package com.matthew.template.common.apis;
 
-import com.matthew.template.common.modules.player.dto.PlayerDTO;
+import com.matthew.template.common.modules.player.data.PlayerData;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,7 +26,7 @@ public interface DataStorage {
      * @return a CompletableFuture that completes with the loaded PlayerData.
      */
     @NotNull
-    public CompletableFuture<PlayerDTO> load(Player player);
+    public CompletableFuture<PlayerData> load(Player player);
 
     /**
      * Loads the player data for all players.
@@ -34,7 +34,7 @@ public interface DataStorage {
      * @return a CompletableFuture that completes with a list of all loaded PlayerData.
      */
     @NotNull
-    public CompletableFuture<List<PlayerDTO>> load();
+    public CompletableFuture<List<PlayerData>> load();
 
     /**
      * Saves the data for a specific player.
@@ -43,7 +43,7 @@ public interface DataStorage {
      * @return a CompletableFuture that completes with the saved PlayerData.
      */
     @NotNull
-    public CompletableFuture<PlayerDTO> save(@NotNull PlayerDTO player);
+    public CompletableFuture<PlayerData> save(@NotNull PlayerData player);
 
     /**
      * Saves the data for a collection of players.
@@ -52,6 +52,6 @@ public interface DataStorage {
      * @return a CompletableFuture that completes with a list of all saved PlayerData.
      */
     @NotNull
-    public CompletableFuture<List<PlayerDTO>> save(@NotNull Collection<? extends PlayerDTO> players);
+    public CompletableFuture<List<PlayerData>> save(@NotNull Collection<? extends PlayerData> players);
 
 }

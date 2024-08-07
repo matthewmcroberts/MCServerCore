@@ -1,7 +1,7 @@
 package com.matthew.template.common.modules.player;
 
 import com.matthew.template.common.apis.ServerModule;
-import com.matthew.template.common.modules.player.dto.PlayerDTO;
+import com.matthew.template.common.modules.player.data.PlayerData;
 import com.matthew.template.common.modules.manager.ServerModuleManager;
 import com.matthew.template.common.modules.storage.DataStorageModule;
 import org.bukkit.entity.Player;
@@ -21,7 +21,7 @@ public class PlayerModule implements ServerModule {
         return storageModule.isLoaded(player);
     }
 
-    public PlayerDTO getPlayerData(Player player) {
+    public PlayerData getPlayerData(Player player) {
         return storageModule.getPlayerData(player);
     }
 

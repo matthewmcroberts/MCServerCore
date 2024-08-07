@@ -1,4 +1,4 @@
-package com.matthew.template.common.modules.ranks.dto;
+package com.matthew.template.common.modules.ranks.data;
 
 import com.matthew.template.common.modules.manager.ServerModuleManager;
 import lombok.Getter;
@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 @ToString
 @NoArgsConstructor
-public class RankDTO {
+public class RankData {
 
     private final ServerModuleManager moduleManager = ServerModuleManager.getInstance();
 
@@ -29,11 +29,11 @@ public class RankDTO {
     private boolean isStaff;
 
     // Called during snakeyaml reflection in RankConfigManager if rank.yml is empty
-    public RankDTO(String name) {
+    public RankData(String name) {
         this.name = name;
     }
 
-    public RankDTO(String name, String color, String chatColor, String prefix, boolean isDefault, boolean isStaff, List<String> permissions) {
+    public RankData(String name, String color, String chatColor, String prefix, boolean isDefault, boolean isStaff, List<String> permissions) {
         this.name = name;
         this.color = color;
         this.chatColor = chatColor;

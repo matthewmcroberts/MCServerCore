@@ -1,7 +1,7 @@
 package com.matthew.template.common.data.config;
 
 import com.matthew.template.common.data.config.framework.ConfigManager;
-import com.matthew.template.common.modules.ranks.dto.RankDTO;
+import com.matthew.template.common.modules.ranks.data.RankData;
 import com.matthew.template.common.serializer.Serializer;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -41,39 +41,39 @@ public class RankConfigManager extends ConfigManager {
             Files.write(rankFile.toPath(), getDefaultYamlString().getBytes(), StandardOpenOption.CREATE);
         }
 
-        List<RankDTO> rankDTOS = serializer.deserializeFromYamlFile(this.rankFile, RankDTO.class);
+        List<RankData> rankData = serializer.deserializeFromYamlFile(this.rankFile, RankData.class);
 
-        for (RankDTO rankDTO : rankDTOS) {
-            if (!rankDTO.hasAllProperties()) {
-                Bukkit.getLogger().severe("Failed to load " + rankDTO.getName() + " rank. Missing property/properties in ranks.yml");
+        for (RankData rankData : rankData) {
+            if (!rankData.hasAllProperties()) {
+                Bukkit.getLogger().severe("Failed to load " + rankData.getName() + " rank. Missing property/properties in ranks.yml");
                 continue; //do not load rank
             }
 
-            module.addRank(rankDTO);
+            module.addRank(rankData);
         }
     }
 
     private String getDefaultYamlString() {
-        List<RankDTO> defaultRankDTOS = new ArrayList<>();
+        List<RankData> defaultRankData = new ArrayList<>();
 
-        defaultRankDTOS.add(new RankDTO("OWNER", "&c", "&e", "[OWNER]", false, true, Collections.singletonList("rank.use")));
-        defaultRankDTOS.add(new RankDTO("ADMIN", "&c", "&e", "[ADMIN]", false, true, Collections.singletonList("rank.use")));
-        defaultRankDTOS.add(new RankDTO("MEMBER", "&7", "&f", "[MEMBER]", true, false, Collections.emptyList()));
+        defaultRankData.add(new RankData("OWNER", "&c", "&e", "[OWNER]", false, true, Collections.singletonList("rank.use")));
+        defaultRankData.add(new RankData("ADMIN", "&c", "&e", "[ADMIN]", false, true, Collections.singletonList("rank.use")));
+        defaultRankData.add(new RankData("MEMBER", "&7", "&f", "[MEMBER]", true, false, Collections.emptyList()));
 
         StringBuilder yamlBuilder = new StringBuilder();
-        for (int i = 0; i < defaultRankDTOS.size(); i++) {
-            RankDTO rankDTO = defaultRankDTOS.get(i);
-            yamlBuilder.append("name: \"").append(rankDTO.getName()).append("\"\n");
-            yamlBuilder.append("color: \"").append(rankDTO.getColor()).append("\"\n");
-            yamlBuilder.append("chatColor: \"").append(rankDTO.getChatColor()).append("\"\n");
-            yamlBuilder.append("prefix: \"").append(rankDTO.getPrefix()).append("\"\n");
-            yamlBuilder.append("isDefault: ").append(rankDTO.isDefault()).append("\n");
-            yamlBuilder.append("isStaff: ").append(rankDTO.isStaff()).append("\n");
+        for (int i = 0; i < defaultRankData.size(); i++) {
+            RankData rankData = defaultRankData.get(i);
+            yamlBuilder.append("name: \"").append(rankData.getName()).append("\"\n");
+            yamlBuilder.append("color: \"").append(rankData.getColor()).append("\"\n");
+            yamlBuilder.append("chatColor: \"").append(rankData.getChatColor()).append("\"\n");
+            yamlBuilder.append("prefix: \"").append(rankData.getPrefix()).append("\"\n");
+            yamlBuilder.append("isDefault: ").append(rankData.isDefault()).append("\n");
+            yamlBuilder.append("isStaff: ").append(rankData.isStaff()).append("\n");
             yamlBuilder.append("permissions:\n");
-            for (String permission : rankDTO.getPermissions()) {
+            for (String permission : rankData.getPermissions()) {
                 yamlBuilder.append("  - \"").append(permission).append("\"\n");
             }
-            if (i < defaultRankDTOS.size() - 1) {
+            if (i < defaultRankData.size() - 1) {
                 yamlBuilder.append("\n---\n");
             }
         }
