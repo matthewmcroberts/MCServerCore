@@ -43,13 +43,13 @@ public class RankConfigManager extends ConfigManager {
 
         List<RankData> rankData = serializer.deserializeFromYamlFile(this.rankFile, RankData.class);
 
-        for (RankData rankData : rankData) {
-            if (!rankData.hasAllProperties()) {
-                Bukkit.getLogger().severe("Failed to load " + rankData.getName() + " rank. Missing property/properties in ranks.yml");
+        for (RankData rank : rankData) {
+            if (!rank.hasAllProperties()) {
+                Bukkit.getLogger().severe("Failed to load " + rank.getName() + " rank. Missing property/properties in ranks.yml");
                 continue; //do not load rank
             }
 
-            module.addRank(rankData);
+            module.addRank(rank);
         }
     }
 

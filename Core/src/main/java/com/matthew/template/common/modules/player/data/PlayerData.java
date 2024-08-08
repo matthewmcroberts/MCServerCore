@@ -1,19 +1,19 @@
 package com.matthew.template.common.modules.player.data;
 
 import com.matthew.template.common.modules.ranks.data.RankData;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
 /**
- * The purpose of PlayerDTO is to keep track of data that will end up being stored or accessed in the database.
+ * The purpose of PlayerData is to keep track of data that will end up being stored or accessed in the database.
  */
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
-@RequiredArgsConstructor
 public final class PlayerData {
 
     private String name;
@@ -23,6 +23,10 @@ public final class PlayerData {
     private boolean isStaff;
     private long playTime;
     private boolean isModified;
+
+    public PlayerData() {
+        // Default constructor
+    }
 
     public PlayerData(final Player player, final RankData rankData, final long playTime) {
         this.name = player.getDisplayName();
