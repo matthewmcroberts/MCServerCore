@@ -22,14 +22,16 @@ import java.util.stream.Collectors;
 @RegisterCommand(name = "rank")
 public class RankCommand implements TabExecutor {
 
-    private PlayerModule playerModule = ServerModuleManager.getInstance().getRegisteredModule(PlayerModule.class);
+    private final PlayerModule playerModule;
 
-    private RankModule rankModule = ServerModuleManager.getInstance().getRegisteredModule(RankModule.class);
+    private final RankModule rankModule;
 
     private final Map<String, BiConsumer<UUID, String[]>> commandActions = new HashMap<>();
 
 
     public RankCommand() {
+        this.playerModule = ServerModuleManager.getInstance().getRegisteredModule(PlayerModule.class);
+        this.rankModule = ServerModuleManager.getInstance().getRegisteredModule(RankModule.class);
         registerActions();
     }
 
