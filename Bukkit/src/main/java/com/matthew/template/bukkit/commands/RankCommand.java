@@ -15,12 +15,9 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 @RegisterCommand(name = "rank")
 public class RankCommand implements TabExecutor {
@@ -29,12 +26,11 @@ public class RankCommand implements TabExecutor {
 
     private RankModule rankModule = ServerModuleManager.getInstance().getRegisteredModule(RankModule.class);
 
-    private final Map<String, Consumer<PlayerData>> singleArgCommandActions = new HashMap<>();
-
-    private final Map<String, BiConsumer<PlayerData, RankData>> doubleArgCommandActions = new HashMap<>();
+    private final Map<String, BiConsumer<UUID, String[]>> commandActions = new HashMap<>();
 
 
     public RankCommand() {
+        registerActions();
     }
 
     @Override
@@ -59,52 +55,106 @@ public class RankCommand implements TabExecutor {
             return true;
         }
 
-        if(args.length != 2) {
+        if(args.length == 0) {
             player.sendMessage(ChatColor.RED + "Incorrect usage");
             return true;
         }
 
-        String actionArg = args[0].toLowerCase();
-
-
-        if(!"get".equals(actionArg)) {
-
-            Player target = Bukkit.getPlayer(args[1]);
-
-            if(target == null) {
-                player.sendMessage(ChatColor.RED + "Player '" + args[1] + "' not found");
-                return true;
-            }
-
-            Consumer<PlayerData> action = singleArgCommandActions.get(actionArg);
-
-            if(action == null) {
-                Bukkit.getLogger().severe("Missing action for RankCommand'" + actionArg + "'");
-                return true;
-            }
-
-            action.accept(playerData);
-
-        } else {
-
-        }
-
+        handleCommand(player, args);
         return true;
     }
 
+    /*
+    TODO: Make it so that subCommands appear before playerNames. Not entirely sure how easy that is or if it is even possible
+     considering the internal lexicographic sorting mechanism in place by minecraft
+     */
     @Nullable
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        return new ArrayList<>();
+    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+        List<String> completions = new ArrayList<>();
+
+        if (args.length == 1) {
+            List<String> subcommands = Arrays.asList("get", "info", "list");
+            List<String> playerNames = Bukkit.getOnlinePlayers().stream()
+                    .map(Player::getName)
+                    .collect(Collectors.toList());
+
+            completions.addAll(subcommands);
+            completions.addAll(playerNames);
+            return completions.stream()
+                    .filter(s -> s.toLowerCase().startsWith(args[0].toLowerCase()))
+                    .collect(Collectors.toList());
+        } else if (args.length == 2) {
+            if ("get".equalsIgnoreCase(args[0]) || "info".equalsIgnoreCase(args[0])) {
+                List<String> rankNames = rankModule.getRanks().stream()
+                        .map(RankData::getName)
+                        .collect(Collectors.toList());
+                return rankNames.stream()
+                        .filter(s -> s.toLowerCase().startsWith(args[1].toLowerCase()))
+                        .collect(Collectors.toList());
+            } else {
+                List<String> rankNames = rankModule.getRanks().stream()
+                        .map(RankData::getName)
+                        .collect(Collectors.toList());
+                return rankNames.stream()
+                        .filter(s -> s.toLowerCase().startsWith(args[1].toLowerCase()))
+                        .collect(Collectors.toList());
+            }
+        }
+
+        return completions;
     }
 
-    public void registerActions() {
-        doubleArgCommandActions.put("set", (player, rank) -> {
 
+    private void handleCommand(Player player, String[] args) {
+        String actionArg = args[0].toLowerCase();
+
+        if (args.length == 2) {
+            Player target = Bukkit.getPlayer(actionArg);
+            BiConsumer<UUID, String[]> action = commandActions.get(target != null ? "set" : actionArg);
+
+            if (action != null) {
+                action.accept(player.getUniqueId(), args);
+            } else {
+                player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found while attempting to set rank '" + args[1] + "'");
+            }
+        } else if (args.length == 1 && "list".equals(actionArg)) {
+            player.sendMessage(rankModule.getRanks().toString());
+        } else {
+            player.sendMessage(ChatColor.RED + "Incorrect usage");
+        }
+    }
+
+
+    private void registerActions() {
+        commandActions.put("set", (uuid, args) -> {
+            Optional<Player> optionalPlayer = Optional.ofNullable(Bukkit.getPlayer(uuid));
+            if (optionalPlayer.isPresent()) {
+                Player player = optionalPlayer.get();
+                player.sendMessage("set");
+            } else {
+                Bukkit.getLogger().warning("Player with UUID " + uuid + " is not online when running 'set' for rank command.");
+            }
         });
 
-        singleArgCommandActions.put("get", (player) -> {
+        commandActions.put("get", (uuid, args) -> {
+            Optional<Player> optionalPlayer = Optional.ofNullable(Bukkit.getPlayer(uuid));
+            if (optionalPlayer.isPresent()) {
+                Player player = optionalPlayer.get();
+                player.sendMessage("get");
+            } else {
+                Bukkit.getLogger().warning("Player with UUID " + uuid + " is not online when running 'get' for rank command.");
+            }
+        });
 
+        commandActions.put("info", (uuid, args) -> {
+            Optional<Player> optionalPlayer = Optional.ofNullable(Bukkit.getPlayer(uuid));
+            if (optionalPlayer.isPresent()) {
+                Player player = optionalPlayer.get();
+                player.sendMessage("info");
+            } else {
+                Bukkit.getLogger().warning("Player with UUID " + uuid + " is not online when running 'info' for rank command.");
+            }
         });
     }
 }
