@@ -12,7 +12,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <outputDir>C:/Users/mm20c/Desktop/Minecourse 1.19.4/plugins</outputDir>
+        <outputDir>C:/Users/mm20c/Desktop/BungeeCord/BungeeServer Lobby-Server/plugins</outputDir>
     </properties>
 
     <parent>
