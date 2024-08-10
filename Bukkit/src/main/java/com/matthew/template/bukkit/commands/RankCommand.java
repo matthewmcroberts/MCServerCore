@@ -130,13 +130,37 @@ public class RankCommand implements TabExecutor {
 
     private void registerActions() {
         commandActions.put("set", (uuid, args) -> {
-            Optional<Player> optionalPlayer = Optional.ofNullable(Bukkit.getPlayer(uuid));
-            if (optionalPlayer.isPresent()) {
-                Player player = optionalPlayer.get();
-                player.sendMessage("set");
-            } else {
-                Bukkit.getLogger().warning("Player with UUID " + uuid + " is not online when running 'set' for rank command.");
+            Player player = Bukkit.getPlayer(uuid);
+            if (player == null) {
+                Bukkit.getLogger().warning("Player with UUID " + uuid + " was not online when running 'set' for rank command.");
+                return;
             }
+
+            Player target = Bukkit.getPlayer(args[0]);
+            if (target == null) {
+                player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found");
+                return;
+            }
+
+            RankData rank = rankModule.getRank(args[1]);
+            if (rank == null) {
+                player.sendMessage(ChatColor.RED + "Rank '" + args[1] + "' not found");
+                return;
+            }
+
+            PlayerData targetData = playerModule.getPlayerData(target);
+            if (targetData == null) {
+                player.sendMessage(ChatColor.RED + "Player data for '" + args[0] + "' not found");
+                Bukkit.getLogger().warning("Online player: '" + target.getName() + "' not found in cache");
+                return;
+            }
+
+            targetData.setRankData(rank);
+            targetData.setModified(true);
+
+            String rankName = rank.getName();
+            target.sendMessage("Rank updated to " + rankName);
+            player.sendMessage("Successfully updated " + target.getName() + "'s rank to " + rankName);
         });
 
         commandActions.put("get", (uuid, args) -> {
@@ -145,7 +169,7 @@ public class RankCommand implements TabExecutor {
                 Player player = optionalPlayer.get();
                 player.sendMessage("get");
             } else {
-                Bukkit.getLogger().warning("Player with UUID " + uuid + " is not online when running 'get' for rank command.");
+                Bukkit.getLogger().warning("Player with UUID " + uuid + " was not online when running 'get' for rank command.");
             }
         });
 
@@ -155,7 +179,7 @@ public class RankCommand implements TabExecutor {
                 Player player = optionalPlayer.get();
                 player.sendMessage("info");
             } else {
-                Bukkit.getLogger().warning("Player with UUID " + uuid + " is not online when running 'info' for rank command.");
+                Bukkit.getLogger().warning("Player with UUID " + uuid + " was not online when running 'info' for rank command.");
             }
         });
     }
