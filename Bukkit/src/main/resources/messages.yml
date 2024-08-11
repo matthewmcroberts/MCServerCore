@@ -1,13 +1,28 @@
 prefix: "&9>> "
 
-usage: "&cIncorrect usage."
-
 noperm: "&cYou do not have permission to perform this command."
 
+
+# --------------------- Commands ---------------------
+
+#
+# Common
+#
+
+usage: "&cIncorrect usage."
+
+# <0> = Target player's name
 playernotfound: "&7Player &e'<0>' &7not found."
 
+#
+# Rank Command
+#
+
+# <0> = Rank name
 ranknotfound: "&7Rank &e'<0>' &7not found."
 
+# <0> = Target player's name | <1> = Rank name
 senderranksuccess: "&7Successfully updated &e<0>'s &7rank to &e'<1>'"
 
+# <0> = Rank name
 targetranksuccess: "&7Rank updated to &e'<0>'"
