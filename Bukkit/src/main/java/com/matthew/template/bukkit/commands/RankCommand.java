@@ -1,13 +1,13 @@
 package com.matthew.template.bukkit.commands;
 
 import com.matthew.template.bukkit.annotations.RegisterCommand;
+import com.matthew.template.bukkit.modules.messages.MessageModule;
 import com.matthew.template.common.modules.manager.ServerModuleManager;
 import com.matthew.template.common.modules.player.PlayerModule;
 import com.matthew.template.common.modules.player.data.PlayerData;
 import com.matthew.template.common.modules.ranks.RankModule;
 import com.matthew.template.common.modules.ranks.data.RankData;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -23,15 +23,14 @@ import java.util.stream.Collectors;
 public class RankCommand implements TabExecutor {
 
     private final PlayerModule playerModule;
-
     private final RankModule rankModule;
-
+    private final MessageModule messageModule;
     private final Map<String, BiConsumer<UUID, String[]>> commandActions = new HashMap<>();
-
 
     public RankCommand() {
         this.playerModule = ServerModuleManager.getInstance().getRegisteredModule(PlayerModule.class);
         this.rankModule = ServerModuleManager.getInstance().getRegisteredModule(RankModule.class);
+        this.messageModule = ServerModuleManager.getInstance().getRegisteredModule(MessageModule.class);
         registerActions();
     }
 
@@ -52,13 +51,13 @@ public class RankCommand implements TabExecutor {
             return true;
         }
 
-        if(!player.hasPermission("rankcommand.use")) {
-            player.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+        if (!player.hasPermission("rankcommand.use")) {
+            messageModule.sendMessage(player, "noperm");
             return true;
         }
 
-        if(args.length == 0) {
-            player.sendMessage(ChatColor.RED + "Incorrect usage");
+        if (args.length == 0) {
+            messageModule.sendMessage(player, "usage");
             return true;
         }
 
@@ -118,39 +117,39 @@ public class RankCommand implements TabExecutor {
             if (action != null) {
                 action.accept(player.getUniqueId(), args);
             } else {
-                player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found while attempting to set rank '" + args[1] + "'");
+                messageModule.sendMessage(player, "playernotfound", args[0]);
             }
         } else if (args.length == 1 && "list".equals(actionArg)) {
             player.sendMessage(rankModule.getRanks().toString());
         } else {
-            player.sendMessage(ChatColor.RED + "Incorrect usage");
+            messageModule.sendMessage(player, "usage");
         }
     }
-
 
     private void registerActions() {
         commandActions.put("set", (uuid, args) -> {
             Player player = Bukkit.getPlayer(uuid);
             if (player == null) {
-                Bukkit.getLogger().warning("Player with UUID " + uuid + " was not online when running 'set' for rank command.");
+                Bukkit.getLogger().warning("Player (sender) with UUID " + uuid + " was not online when running 'set' for rank command.");
                 return;
             }
 
             Player target = Bukkit.getPlayer(args[0]);
+            final String PLAYER_NOT_FOUND = messageModule.buildMessage("playernotfound", args[0]);
             if (target == null) {
-                player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found");
+                player.sendMessage(PLAYER_NOT_FOUND);
                 return;
             }
 
             RankData rank = rankModule.getRank(args[1]);
             if (rank == null) {
-                player.sendMessage(ChatColor.RED + "Rank '" + args[1] + "' not found");
+                messageModule.sendMessage(player, "ranknotfound", args[1]);
                 return;
             }
 
             PlayerData targetData = playerModule.getPlayerData(target);
             if (targetData == null) {
-                player.sendMessage(ChatColor.RED + "Player data for '" + args[0] + "' not found");
+                player.sendMessage(PLAYER_NOT_FOUND);
                 Bukkit.getLogger().warning("Online player: '" + target.getName() + "' not found in cache");
                 return;
             }
@@ -158,9 +157,8 @@ public class RankCommand implements TabExecutor {
             targetData.setRankData(rank);
             targetData.setModified(true);
 
-            String rankName = rank.getName();
-            target.sendMessage("Rank updated to " + rankName);
-            player.sendMessage("Successfully updated " + target.getName() + "'s rank to " + rankName);
+            messageModule.sendMessage(target, "targetranksuccess", rank.getName());
+            messageModule.sendMessage(player, "senderranksuccess", player.getName(), rank.getName());
         });
 
         commandActions.put("get", (uuid, args) -> {
