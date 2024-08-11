@@ -1,0 +1,13 @@
+prefix: "&9>> "
+
+usage: "&cIncorrect usage."
+
+noperm: "&cYou do not have permission to perform this command."
+
+playernotfound: "&7Player &e'<0>' &7not found."
+
+ranknotfound: "&7Rank &e'<0>' &7not found."
+
+senderranksuccess: "&7Successfully updated &e<0>'s &7rank to &e'<1>'"
+
+targetranksuccess: "&7Rank updated to &e'<0>'"
