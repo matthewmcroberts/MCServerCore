@@ -1,16 +1,12 @@
-package com.matthew.template.bukkit.commands;
+package com.matthew.template.bukkit.commands.rank;
 
 import com.matthew.template.bukkit.annotations.RegisterCommand;
-import com.matthew.template.bukkit.modules.messages.MessageModule;
-import com.matthew.template.common.modules.manager.ServerModuleManager;
-import com.matthew.template.common.modules.player.PlayerModule;
+import com.matthew.template.bukkit.commands.BaseCommand;
 import com.matthew.template.common.modules.player.data.PlayerData;
-import com.matthew.template.common.modules.ranks.RankModule;
 import com.matthew.template.common.modules.ranks.data.RankData;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,48 +16,31 @@ import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 @RegisterCommand(name = "rank")
-public class RankCommand implements TabExecutor {
+public class RankCommand extends BaseCommand {
 
-    private final PlayerModule playerModule;
-    private final RankModule rankModule;
-    private final MessageModule messageModule;
-    private final Map<String, BiConsumer<UUID, String[]>> commandActions = new HashMap<>();
 
     public RankCommand() {
-        this.playerModule = ServerModuleManager.getInstance().getRegisteredModule(PlayerModule.class);
-        this.rankModule = ServerModuleManager.getInstance().getRegisteredModule(RankModule.class);
-        this.messageModule = ServerModuleManager.getInstance().getRegisteredModule(MessageModule.class);
-        registerActions();
+        super("rank.use");
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        Player player = sender instanceof Player ? (Player) sender : null;
+    protected boolean execute(Player player, String[] args) {
+        String actionArg = args[0].toLowerCase();
 
-        if (player == null) {
-            Bukkit.getLogger().info("Sender must be a player");
-            return true;
-        }
+        if (args.length == 2) {
+            Player target = Bukkit.getPlayer(actionArg);
+            BiConsumer<UUID, String[]> action = commandActions.get(target != null ? "set" : actionArg);
 
-        PlayerData playerData = playerModule.getPlayerData(player);
-
-        if (playerData == null) {
-            Bukkit.getLogger().warning("Unexpected outcome occurred while attempting to execute RankCommand: '"
-                    + player.getName() + "' (sender) not found in PlayerData cache.");
-            return true;
-        }
-
-        if (!player.hasPermission("rankcommand.use")) {
-            messageModule.sendMessage(player, "noperm");
-            return true;
-        }
-
-        if (args.length == 0) {
+            if (action != null) {
+                action.accept(player.getUniqueId(), args);
+            } else {
+                messageModule.sendMessage(player, "playernotfound", args[0]);
+            }
+        } else if (args.length == 1 && "list".equals(actionArg)) {
+            player.sendMessage(rankModule.getRanks().toString());
+        } else {
             messageModule.sendMessage(player, "usage");
-            return true;
         }
-
-        handleCommand(player, args);
         return true;
     }
 
@@ -86,17 +65,14 @@ public class RankCommand implements TabExecutor {
                     .filter(s -> s.toLowerCase().startsWith(args[0].toLowerCase()))
                     .collect(Collectors.toList());
         } else if (args.length == 2) {
+            List<String> rankNames = rankModule.getRanks().stream()
+                    .map(RankData::getName)
+                    .collect(Collectors.toList());
             if ("get".equalsIgnoreCase(args[0]) || "info".equalsIgnoreCase(args[0])) {
-                List<String> rankNames = rankModule.getRanks().stream()
-                        .map(RankData::getName)
-                        .collect(Collectors.toList());
                 return rankNames.stream()
                         .filter(s -> s.toLowerCase().startsWith(args[1].toLowerCase()))
                         .collect(Collectors.toList());
             } else {
-                List<String> rankNames = rankModule.getRanks().stream()
-                        .map(RankData::getName)
-                        .collect(Collectors.toList());
                 return rankNames.stream()
                         .filter(s -> s.toLowerCase().startsWith(args[1].toLowerCase()))
                         .collect(Collectors.toList());
@@ -106,27 +82,8 @@ public class RankCommand implements TabExecutor {
         return completions;
     }
 
-
-    private void handleCommand(Player player, String[] args) {
-        String actionArg = args[0].toLowerCase();
-
-        if (args.length == 2) {
-            Player target = Bukkit.getPlayer(actionArg);
-            BiConsumer<UUID, String[]> action = commandActions.get(target != null ? "set" : actionArg);
-
-            if (action != null) {
-                action.accept(player.getUniqueId(), args);
-            } else {
-                messageModule.sendMessage(player, "playernotfound", args[0]);
-            }
-        } else if (args.length == 1 && "list".equals(actionArg)) {
-            player.sendMessage(rankModule.getRanks().toString());
-        } else {
-            messageModule.sendMessage(player, "usage");
-        }
-    }
-
-    private void registerActions() {
+    @Override
+    protected void registerActions() {
         commandActions.put("set", (uuid, args) -> {
             Player player = Bukkit.getPlayer(uuid);
             if (player == null) {

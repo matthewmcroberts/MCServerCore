@@ -1,6 +1,7 @@
-package com.matthew.template.bukkit.commands;
+package com.matthew.template.bukkit.commands.spawnentity;
 
 import com.matthew.template.bukkit.annotations.RegisterCommand;
+import com.matthew.template.bukkit.commands.BaseCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -12,21 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RegisterCommand(name = "spawnentity")
-public class SpawnEntityCommand implements TabExecutor {
+public class SpawnEntityCommand extends BaseCommand {
+
+
+    public SpawnEntityCommand() {
+        super("spawnentity.use");
+    }
+
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Player player = (sender instanceof Player) ? (Player) sender : null;
-
-        if(player == null) {
-            Bukkit.getLogger().severe("You must be a player to use this command");
-            return true;
-        }
-
-        if(!player.hasPermission("spawnentity.use")) {
-            player.sendMessage(ChatColor.RED + "Insufficient permissions");
-            return true;
-        }
-
+    protected boolean execute(Player player, String[] args) {
         EntityType entityType;
 
         if (args.length < 2) {
@@ -116,5 +111,10 @@ public class SpawnEntityCommand implements TabExecutor {
         } catch (Throwable t) {
             return false;
         }
+    }
+
+    @Override
+    protected void registerActions() {
+
     }
 }
