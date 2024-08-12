@@ -11,6 +11,7 @@ import com.matthew.template.common.modules.manager.ServerModuleManager;
 import com.matthew.template.common.modules.player.PlayerModule;
 import com.matthew.template.common.modules.ranks.RankModule;
 import com.matthew.template.common.modules.storage.DataStorageModule;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,8 +21,10 @@ import java.io.IOException;
 
 public final class ServerCore extends JavaPlugin {
 
+    @Getter
     private static ServerCore instance;
 
+    @Getter
     private DataStorage dataStorage;
 
     private ServerModuleManager moduleManager;
@@ -30,13 +33,26 @@ public final class ServerCore extends JavaPlugin {
 
     private RankConfigManager rankConfig;
 
-    @Override
-    public void onEnable() {
-        instance = this;
+    private MySQLConfig sqlConfig;
 
+    @Override
+    public void onLoad() {
         if(!getDataFolder().exists()) {
             getDataFolder().mkdir();
         }
+
+        Bukkit.getLogger().info("Loading parameters for MySQL database...");
+        sqlConfig = new MySQLConfig();
+        sqlConfig.setDatabase("testserver");
+        sqlConfig.setHost("127.0.0.1");
+        sqlConfig.setPort(3306);
+        sqlConfig.setUsername("root");
+        sqlConfig.setPassword("");
+    }
+
+    @Override
+    public void onEnable() {
+        instance = this;
 
         //Register Modules
         Bukkit.getLogger().info("Registering modules...");
@@ -56,13 +72,7 @@ public final class ServerCore extends JavaPlugin {
         }
 
         //Load MySQL Data
-        Bukkit.getLogger().info("Loading MySQL database...");
-        MySQLConfig sqlConfig = new MySQLConfig();
-        sqlConfig.setDatabase("testserver");
-        sqlConfig.setHost("127.0.0.1");
-        sqlConfig.setPort(3306);
-        sqlConfig.setUsername("root");
-        sqlConfig.setPassword("");
+        Bukkit.getLogger().info("Initializing MySQL database...");
         dataStorage = new MySQLDataStorage(sqlConfig);
         dataStorage.init();
 
@@ -84,13 +94,5 @@ public final class ServerCore extends JavaPlugin {
 
         moduleManager.teardown();
         mechanicManager.unregister();
-    }
-
-    public DataStorage getDataStorage() {
-        return this.dataStorage;
-    }
-
-    public static ServerCore getInstance() {
-        return instance;
     }
 }
