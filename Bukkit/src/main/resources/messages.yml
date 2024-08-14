@@ -2,6 +2,10 @@ prefix: "&9>> "
 
 noperm: "&cYou do not have permission to perform this command."
 
+silenced: "&cThe chat is currently silenced."
+
+inappropriate: "&cYour message contained inappropriate content and was not sent."
+
 
 # --------------------- Commands ---------------------
 
