@@ -74,6 +74,8 @@ public class PlayerDataListener implements Listener {
         });
     }
 
+
+    //TODO: Implement a more dynamic way of removing player from all their respective channels.
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
