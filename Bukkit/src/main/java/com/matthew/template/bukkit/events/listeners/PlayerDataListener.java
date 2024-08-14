@@ -1,6 +1,8 @@
 package com.matthew.template.bukkit.events.listeners;
 
 import com.matthew.template.bukkit.ServerCore;
+import com.matthew.template.bukkit.modules.chat.ChatModule;
+import com.matthew.template.bukkit.modules.chat.channels.BuiltInChatChannel;
 import com.matthew.template.common.apis.DataStorage;
 import com.matthew.template.common.modules.manager.ServerModuleManager;
 import com.matthew.template.common.modules.player.PlayerModule;
@@ -31,6 +33,8 @@ public class PlayerDataListener implements Listener {
 
     private final RankModule rankModule;
 
+    private final ChatModule chatModule;
+
 
     public PlayerDataListener(JavaPlugin plugin) {
         final ServerModuleManager moduleManager = ServerModuleManager.getInstance();
@@ -39,6 +43,7 @@ public class PlayerDataListener implements Listener {
         this.storageModule = moduleManager.getRegisteredModule(DataStorageModule.class);
         this.playerModule = moduleManager.getRegisteredModule(PlayerModule.class);
         this.rankModule = moduleManager.getRegisteredModule(RankModule.class);
+        this.chatModule = moduleManager.getRegisteredModule(ChatModule.class);
     }
 
 
@@ -64,6 +69,7 @@ public class PlayerDataListener implements Listener {
                 storageModule.addPlayerData(loadedPlayer);
             }
 
+            chatModule.addPlayerToChannelAudience(BuiltInChatChannel.GLOBAL, e.getPlayer());
             PermissibleInjector.injectPlayer(plugin, player);
         });
     }
@@ -73,6 +79,8 @@ public class PlayerDataListener implements Listener {
         Player player = e.getPlayer();
         PlayerData playerData = playerModule.getPlayerData(player);
         storageModule.removePlayerData(playerData);
+        chatModule.removePlayerFromChannelAudience(BuiltInChatChannel.GLOBAL, e.getPlayer());
+
         if (playerData == null || !playerData.isModified()) {
             return;
         }

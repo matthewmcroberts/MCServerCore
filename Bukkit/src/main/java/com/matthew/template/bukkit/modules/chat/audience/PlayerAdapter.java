@@ -1,4 +1,4 @@
-package com.matthew.template.bukkit.modules.chat.wrapper;
+package com.matthew.template.bukkit.modules.chat.audience;
 
 import com.matthew.template.bukkit.modules.chat.Component;
 import com.matthew.template.bukkit.modules.chat.api.Audience;
