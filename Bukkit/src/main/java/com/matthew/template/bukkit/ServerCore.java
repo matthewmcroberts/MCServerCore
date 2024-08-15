@@ -1,5 +1,6 @@
 package com.matthew.template.bukkit;
 
+import com.matthew.template.bukkit.events.listeners.PlayerDataListener;
 import com.matthew.template.bukkit.modules.chat.ChatModule;
 import com.matthew.template.bukkit.modules.commands.CommandModule;
 import com.matthew.template.bukkit.modules.messages.MessageModule;
@@ -7,7 +8,6 @@ import com.matthew.template.common.apis.DataStorage;
 import com.matthew.template.common.data.config.RankConfigManager;
 import com.matthew.template.common.data.db.MySQLDataStorage;
 import com.matthew.template.common.data.db.config.MySQLConfig;
-import com.matthew.template.bukkit.events.GeneralEventsManager;
 import com.matthew.template.common.modules.manager.ServerModuleManager;
 import com.matthew.template.common.modules.player.PlayerModule;
 import com.matthew.template.common.modules.ranks.RankModule;
@@ -29,8 +29,6 @@ public final class ServerCore extends JavaPlugin {
     private DataStorage dataStorage;
 
     private ServerModuleManager moduleManager;
-
-    private GeneralEventsManager mechanicManager;
 
     private RankConfigManager rankConfig;
 
@@ -84,8 +82,7 @@ public final class ServerCore extends JavaPlugin {
 
         //General Events Setup
         Bukkit.getLogger().info("Registering events...");
-        mechanicManager = new GeneralEventsManager(this);
-        mechanicManager.register();
+        Bukkit.getPluginManager().registerEvents(new PlayerDataListener(this), this);
 
         Bukkit.getLogger().info("ServerCore successfully enabled!");
     }
@@ -95,6 +92,5 @@ public final class ServerCore extends JavaPlugin {
         rankConfig.save();
 
         moduleManager.teardown();
-        mechanicManager.unregister();
     }
 }
