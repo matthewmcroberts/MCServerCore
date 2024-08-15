@@ -93,11 +93,11 @@ public class ChatModule implements ServerModule {
         }
     }
 
+    //TODO: Implement censor
     public CompletableFuture<Boolean> isFilteredAsync(String text) {
         return CompletableFuture.supplyAsync(() -> isFiltered(text));
     }
 
-    //TODO: Implement censor
     private boolean isFiltered(String text) {
         return text.toLowerCase().contains("badword");
     }
