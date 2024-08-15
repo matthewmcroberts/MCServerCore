@@ -2,6 +2,7 @@ package com.matthew.template.bukkit.events.listeners;
 
 import com.matthew.template.bukkit.modules.chat.ChatModule;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
@@ -12,7 +13,7 @@ public class ChatListener implements Listener {
         this.module = chatModule;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerChat(AsyncPlayerChatEvent e) {
         e.setCancelled(true);
 

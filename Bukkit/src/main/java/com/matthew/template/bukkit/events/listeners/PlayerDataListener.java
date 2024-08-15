@@ -14,6 +14,7 @@ import com.matthew.template.common.modules.storage.DataStorageModule;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -47,7 +48,7 @@ public class PlayerDataListener implements Listener {
     }
 
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
         this.dataStorage.load(player).whenComplete((loadedPlayer, ex) -> {
@@ -76,7 +77,7 @@ public class PlayerDataListener implements Listener {
 
 
     //TODO: Implement a more dynamic way of removing player from all their respective channels.
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
         PlayerData playerData = playerModule.getPlayerData(player);
