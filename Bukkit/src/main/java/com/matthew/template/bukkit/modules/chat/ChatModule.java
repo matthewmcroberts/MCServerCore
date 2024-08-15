@@ -9,8 +9,12 @@ import com.matthew.template.bukkit.modules.chat.audience.PlayerAdapter;
 import com.matthew.template.bukkit.modules.messages.MessageModule;
 import com.matthew.template.common.apis.ServerModule;
 import com.matthew.template.common.modules.manager.ServerModuleManager;
+import com.matthew.template.common.modules.player.PlayerModule;
+import com.matthew.template.common.modules.player.data.PlayerData;
+import com.matthew.template.common.modules.ranks.data.RankData;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -40,6 +44,8 @@ public class ChatModule implements ServerModule {
     private Listener listener;
 
     private MessageModule messages;
+
+    private PlayerModule playerModule;
 
     private final Map<ChatChannel, Function<Player, Set<Audience>>> audienceFunctions = new HashMap<>();
 
@@ -140,11 +146,17 @@ public class ChatModule implements ServerModule {
     @Override
     public void setUp() {
         messages = ServerModuleManager.getInstance().getRegisteredModule(MessageModule.class);
+        playerModule = ServerModuleManager.getInstance().getRegisteredModule(PlayerModule.class);
 
         setAudienceFunction(BuiltInChatChannel.GLOBAL, player -> getDefaultAudience());
-        setChatRenderer(BuiltInChatChannel.GLOBAL, (player, message) ->
-                new Component(player.getName() + " [GLOBAL]: " + message.getText())
-        );
+        setChatRenderer(BuiltInChatChannel.GLOBAL, (player, message) -> {
+            PlayerData playerData = playerModule.getPlayerData(player);
+            RankData rank = playerData.getRankData();
+            String tempMessage = rank.getPrefix() + " " + player.getName() + ": " + rank.getChatColor() + message.getText();
+            String formattedMessage = ChatColor.translateAlternateColorCodes('&', tempMessage);
+            return new Component(formattedMessage);
+        });
+
 
         Bukkit.getOnlinePlayers().forEach(player -> addPlayerToChannelAudience(BuiltInChatChannel.GLOBAL, player));
 
