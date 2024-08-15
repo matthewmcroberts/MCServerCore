@@ -56,15 +56,14 @@ public class RankConfigManager extends ConfigManager {
     private String getDefaultYamlString() {
         List<RankData> defaultRankData = new ArrayList<>();
 
-        defaultRankData.add(new RankData("OWNER", "&c", "&e", "[OWNER]", false, true, Collections.singletonList("rank.use")));
-        defaultRankData.add(new RankData("ADMIN", "&c", "&e", "[ADMIN]", false, true, Collections.singletonList("rank.use")));
-        defaultRankData.add(new RankData("MEMBER", "&7", "&f", "[MEMBER]", true, false, Collections.emptyList()));
+        defaultRankData.add(new RankData("OWNER", "&e", "&c[OWNER]", false, true, Collections.singletonList("rank.use")));
+        defaultRankData.add(new RankData("ADMIN", "&e", "&c[ADMIN]", false, true, Collections.singletonList("rank.use")));
+        defaultRankData.add(new RankData("MEMBER", "&f", "&7[MEMBER]", true, false, Collections.emptyList()));
 
         StringBuilder yamlBuilder = new StringBuilder();
         for (int i = 0; i < defaultRankData.size(); i++) {
             RankData rankData = defaultRankData.get(i);
             yamlBuilder.append("name: \"").append(rankData.getName()).append("\"\n");
-            yamlBuilder.append("color: \"").append(rankData.getColor()).append("\"\n");
             yamlBuilder.append("chatColor: \"").append(rankData.getChatColor()).append("\"\n");
             yamlBuilder.append("prefix: \"").append(rankData.getPrefix()).append("\"\n");
             yamlBuilder.append("isDefault: ").append(rankData.isDefault()).append("\n");

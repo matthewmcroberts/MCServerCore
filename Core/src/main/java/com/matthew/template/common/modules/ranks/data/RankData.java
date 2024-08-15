@@ -22,7 +22,6 @@ public class RankData {
     @NonNull
     private String name;
     private List<String> permissions;
-    private String color;
     private String chatColor;
     private String prefix;
     private boolean isDefault;
@@ -33,9 +32,8 @@ public class RankData {
         this.name = name;
     }
 
-    public RankData(String name, String color, String chatColor, String prefix, boolean isDefault, boolean isStaff, List<String> permissions) {
+    public RankData(String name, String chatColor, String prefix, boolean isDefault, boolean isStaff, List<String> permissions) {
         this.name = name;
-        this.color = color;
         this.chatColor = chatColor;
         this.prefix = prefix;
         this.isDefault = isDefault;
@@ -63,7 +61,7 @@ public class RankData {
     }
 
     public boolean hasAllProperties() {
-        return this.name != null || this.color != null || this.chatColor != null || this.prefix != null || this.permissions != null;
+        return this.name != null || this.chatColor != null || this.prefix != null || this.permissions != null;
     }
 
     public boolean isStaff() {

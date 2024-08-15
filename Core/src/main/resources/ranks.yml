@@ -1,7 +1,6 @@
 name: "OWNER"
-color: "&c"
 chatColor: "&e"
-prefix: "[OWNER]"
+prefix: "&c[OWNER]"
 isDefault: false
 isStaff: true
 permissions:
@@ -11,9 +10,8 @@ permissions:
 
 ---
 name: "ADMIN"
-color: "&c"
 chatColor: "&e"
-prefix: "[ADMIN]"
+prefix: "&c[ADMIN]"
 isDefault: false
 isStaff: true
 permissions:
@@ -23,9 +21,8 @@ permissions:
 
 ---
 name: "MEMBER"
-color: "&7"
 chatColor: "&f"
-prefix: "[MEMBER]"
+prefix: "&7[MEMBER]"
 isDefault: true
 isStaff: false
 permissions:
