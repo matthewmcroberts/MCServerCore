@@ -1,6 +1,6 @@
 package com.matthew.template.bukkit.modules.chat.api;
 
-import com.matthew.template.bukkit.modules.chat.Component;
+import net.kyori.adventure.text.Component;
 
 public interface Audience {
     void sendMessage(Component message);
