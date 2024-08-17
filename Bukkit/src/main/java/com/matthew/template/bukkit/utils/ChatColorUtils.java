@@ -1,11 +1,14 @@
 package com.matthew.template.bukkit.utils;
 
-
-import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class ChatColorUtils {
 
@@ -31,5 +34,34 @@ public final class ChatColorUtils {
             return TextColor.fromHexString(hexColor);
         }
         return NamedTextColor.WHITE;
+    }
+
+    public static Component parseColors(Component message) {
+        String text = LegacyComponentSerializer.legacySection().serialize(message);
+        Pattern pattern = Pattern.compile("<(\\w+)>(.*?)</\\1>");
+        Matcher matcher = pattern.matcher(text);
+
+        Component result = Component.empty();
+        int lastEnd = 0;
+
+        while (matcher.find()) {
+            String colorName = matcher.group(1);
+            String matchText = matcher.group(2);
+
+            if (matcher.start() > lastEnd) {
+                result = result.append(Component.text(text.substring(lastEnd, matcher.start())));
+            }
+
+            TextColor color = getColorFromName(colorName);
+            result = result.append(Component.text(matchText, color));
+
+            lastEnd = matcher.end();
+        }
+
+        if (lastEnd < text.length()) {
+            result = result.append(Component.text(text.substring(lastEnd)));
+        }
+
+        return result;
     }
 }

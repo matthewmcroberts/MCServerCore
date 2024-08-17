@@ -7,6 +7,7 @@ import com.matthew.template.bukkit.modules.chat.api.ChatRenderer;
 import com.matthew.template.bukkit.modules.chat.channels.BuiltInChatChannel;
 import com.matthew.template.bukkit.modules.chat.audience.PlayerAdapter;
 import com.matthew.template.bukkit.modules.messages.MessageModule;
+import com.matthew.template.bukkit.utils.ChatColorUtils;
 import com.matthew.template.common.apis.ServerModule;
 import com.matthew.template.common.modules.manager.ServerModuleManager;
 import com.matthew.template.common.modules.player.PlayerModule;
@@ -15,6 +16,7 @@ import com.matthew.template.common.modules.ranks.data.RankData;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -240,11 +242,14 @@ public class ChatModule implements ServerModule {
             PlayerData playerData = playerModule.getPlayerData(player);
             RankData rank = playerData.getRankData();
 
-            String tempMessage = rank.getPrefix() + " " + player.getName() + ": " + rank.getChatColor() + LegacyComponentSerializer.legacyAmpersand().serialize(message);
+            TextColor prefixColor = ChatColorUtils.getColorFromName(rank.getPrefixColor());
+            TextColor chatColor = ChatColorUtils.getColorFromName(rank.getChatColor());
 
-            return (LegacyComponentSerializer.legacyAmpersand().deserialize(tempMessage));
+
+            return Component.text(rank.getPrefix(), prefixColor)
+                    .append(Component.text(" " + player.getName() + ": ", prefixColor))
+                    .append(message.color(chatColor));
         });
-
 
         Bukkit.getOnlinePlayers().forEach(player -> addPlayerToChannelAudience(BuiltInChatChannel.GLOBAL, player));
 
