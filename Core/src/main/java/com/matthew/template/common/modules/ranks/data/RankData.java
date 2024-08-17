@@ -23,6 +23,7 @@ public class RankData {
     private String name;
     private List<String> permissions;
     private String chatColor;
+    private String prefixColor;
     private String prefix;
     private boolean isDefault;
     private boolean isStaff;
@@ -32,9 +33,10 @@ public class RankData {
         this.name = name;
     }
 
-    public RankData(String name, String chatColor, String prefix, boolean isDefault, boolean isStaff, List<String> permissions) {
+    public RankData(String name, String chatColor, String prefixColor, String prefix, boolean isDefault, boolean isStaff, List<String> permissions) {
         this.name = name;
         this.chatColor = chatColor;
+        this.prefixColor = prefixColor;
         this.prefix = prefix;
         this.isDefault = isDefault;
         this.isStaff = isStaff;
