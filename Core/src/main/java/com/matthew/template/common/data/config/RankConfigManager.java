@@ -56,9 +56,9 @@ public class RankConfigManager extends ConfigManager {
     private String getDefaultYamlString() {
         List<RankData> defaultRankData = new ArrayList<>();
 
-        defaultRankData.add(new RankData("OWNER", "&e", "&c[OWNER]", false, true, Collections.singletonList("rank.use")));
-        defaultRankData.add(new RankData("ADMIN", "&e", "&c[ADMIN]", false, true, Collections.singletonList("rank.use")));
-        defaultRankData.add(new RankData("MEMBER", "&f", "&7[MEMBER]", true, false, Collections.emptyList()));
+        defaultRankData.add(new RankData("OWNER", "YELLOW", "<red>[OWNER]</red>", false, true, Collections.singletonList("rank.use")));
+        defaultRankData.add(new RankData("ADMIN", "YELLOW", "<red>[ADMIN]</red>", false, true, Collections.singletonList("rank.use")));
+        defaultRankData.add(new RankData("MEMBER", "WHITE", "<gray>[MEMBER]</gray>", true, false, Collections.emptyList()));
 
         StringBuilder yamlBuilder = new StringBuilder();
         for (int i = 0; i < defaultRankData.size(); i++) {
