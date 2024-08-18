@@ -26,7 +26,7 @@ playernotfound: "<gray>Player</gray> <yellow>'<0>'</yellow> <gray>not found.</gr
 ranknotfound: "<gray>Rank</gray> <yellow>'<0>'</yellow> <gray>not found.</gray>"
 
 # <0> = Target player's name | <1> = Rank name
-senderranksuccess: "<gray>>Successfully updated</gray> <yellow><0>'s</yellow> <gray>rank to</gray> <yellow>'<1>'</yellow>"
+senderranksuccess: "<gray>Successfully updated</gray> <yellow><0>'s</yellow> <gray>rank to</gray> <yellow>'<1>'</yellow>"
 
 # <0> = Rank name
 targetranksuccess: "<gray>Rank updated to</gray> <yellow>'<0>'</yellow>"
