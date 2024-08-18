@@ -1,7 +1,9 @@
 package com.matthew.template.bukkit.modules.messages;
 
+import com.matthew.template.bukkit.utils.ChatColorUtils;
 import com.matthew.template.common.apis.ServerModule;
 import lombok.RequiredArgsConstructor;
+import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,34 +24,33 @@ public class MessageModule implements ServerModule {
     private Map<String, String> cache;
     private String prefix;
 
-    public String buildMessage(String key, Object... args) {
+    public Component buildMessage(String key, Object... args) {
         String message = cache.get(key);
 
         if (message == null) {
             plugin.getLogger().warning("Message key '" + key + "' not found");
-            return "";
+            return Component.text("");
         }
-
-        message = ChatColor.translateAlternateColorCodes('&', message);
 
         if ((args != null) && (args.length > 0)) {
             for (int i = 0; i < args.length; i++) {
                 message = message.replace("<" + i + ">", String.valueOf(args[i]));
             }
         }
-        return prefix + message;
+
+        return ChatColorUtils.parseColors(Component.text(prefix + message));
     }
 
-    public void buildThenRunMessage(String key, Consumer<String> callback) {
+    public void buildThenRunMessage(String key, Consumer<Component> callback) {
         callback.accept(this.buildMessage(key, (Object) null));
     }
 
-    public void buildThenRunMessage(String key, Consumer<String> callback, Object... args) {
+    public void buildThenRunMessage(String key, Consumer<Component> callback, Object... args) {
         callback.accept(this.buildMessage(key, args));
     }
 
     public void sendMessage(Player player, String key, Object... args) {
-        String message = buildMessage(key, args);
+        Component message = buildMessage(key, args);
         player.sendMessage(message);
     }
 

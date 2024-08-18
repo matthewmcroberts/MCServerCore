@@ -4,6 +4,7 @@ import com.matthew.template.bukkit.annotations.RegisterCommand;
 import com.matthew.template.bukkit.commands.BaseCommand;
 import com.matthew.template.common.modules.player.data.PlayerData;
 import com.matthew.template.common.modules.ranks.data.RankData;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -12,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
@@ -92,7 +94,7 @@ public class RankCommand extends BaseCommand {
             }
 
             Player target = Bukkit.getPlayer(args[0]);
-            final String PLAYER_NOT_FOUND = messageModule.buildMessage("playernotfound", args[0]);
+            final Component PLAYER_NOT_FOUND = messageModule.buildMessage("playernotfound", args[0]);
             if (target == null) {
                 player.sendMessage(PLAYER_NOT_FOUND);
                 return;

@@ -1,10 +1,10 @@
-prefix: "&9>> "
+prefix: "<blue>>></blue> "
 
-noperm: "&cYou do not have permission to perform this command."
+noperm: "<red>You do not have permission to perform this command.</red>"
 
-silenced: "&cThe chat is currently silenced."
+silenced: "<red>The chat is currently silenced.</red>"
 
-inappropriate: "&cYour message contained inappropriate content and was not sent."
+inappropriate: "<red>Your message contained inappropriate content and was not sent.</red>"
 
 
 # --------------------- Commands ---------------------
@@ -13,20 +13,20 @@ inappropriate: "&cYour message contained inappropriate content and was not sent.
 # Common
 #
 
-usage: "&cIncorrect usage."
+usage: "<red>Incorrect usage.</red>"
 
 # <0> = Target player's name
-playernotfound: "&7Player &e'<0>' &7not found."
+playernotfound: "<gray>Player</gray> <yellow>'<0>'</yellow> <gray>not found.</gray>"
 
 #
 # Rank Command
 #
 
 # <0> = Rank name
-ranknotfound: "&7Rank &e'<0>' &7not found."
+ranknotfound: "<gray>Rank</gray> <yellow>'<0>'</yellow> <gray>not found.</gray>"
 
 # <0> = Target player's name | <1> = Rank name
-senderranksuccess: "&7Successfully updated &e<0>'s &7rank to &e'<1>'"
+senderranksuccess: "<gray>>Successfully updated</gray> <yellow><0>'s</yellow> <gray>rank to</gray> <yellow>'<1>'</yellow>"
 
 # <0> = Rank name
-targetranksuccess: "&7Rank updated to &e'<0>'"
+targetranksuccess: "<gray>Rank updated to</gray> <yellow>'<0>'</yellow>"
