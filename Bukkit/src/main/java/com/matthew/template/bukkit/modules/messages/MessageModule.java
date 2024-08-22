@@ -74,6 +74,10 @@ public class MessageModule implements ServerModule {
         try {
             Yaml yaml = new Yaml();
             cache = yaml.load(Files.newBufferedReader(configFile.toPath()));
+
+            //TODO: Leaving prefix as a String for now, going to change in the future of course so I'm not utilizing
+            // legacy components
+
             prefix = cache.getOrDefault("prefix", ""); // Load the prefix from messages.yml
             prefix = ChatColor.translateAlternateColorCodes('&', prefix);
         } catch (IOException e) {
