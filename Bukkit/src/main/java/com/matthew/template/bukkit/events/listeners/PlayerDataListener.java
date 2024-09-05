@@ -70,7 +70,6 @@ public class PlayerDataListener implements Listener {
                 storageModule.addPlayerData(loadedPlayer);
             }
 
-            chatModule.addPlayerToChannelAudience(BuiltInChatChannel.GLOBAL, e.getPlayer());
             PermissibleInjector.injectPlayer(plugin, player);
         });
     }
@@ -82,7 +81,6 @@ public class PlayerDataListener implements Listener {
         Player player = e.getPlayer();
         PlayerData playerData = playerModule.getPlayerData(player);
         storageModule.removePlayerData(playerData);
-        chatModule.removePlayerFromChannelAudience(BuiltInChatChannel.GLOBAL, e.getPlayer());
 
         if (playerData == null || !playerData.isModified()) {
             return;
